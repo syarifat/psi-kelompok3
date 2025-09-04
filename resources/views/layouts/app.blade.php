@@ -16,9 +16,6 @@
 </head>
 <body>
     @include('layouts.navigation') {{-- jika ada --}}
-    <main>
-        @yield('content')
-    </main>
     @yield('scripts')
 </body>
 </html>

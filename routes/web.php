@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kelas', KelasController::class);
     Route::resource('tahun_ajaran', TahunAjaranController::class);
     Route::resource('user', UserController::class);
+    Route::post('/rombel_siswa/mass_store', [RombelSiswaController::class, 'mass_store'])->name('rombel_siswa.mass_store');
+    Route::post('/rombel_siswa/ganti-kelas-massal', [RombelSiswaController::class, 'gantiKelasMassal'])->name('rombel_siswa.ganti_kelas_massal');
 });
 
 require __DIR__.'/auth.php';
@@ -46,6 +48,5 @@ Route::get('/whatsapp/status', [\App\Http\Controllers\WhatsappController::class,
 Route::get('/whatsapp/qr', [\App\Http\Controllers\WhatsappController::class, 'qr'])->name('whatsapp.qr');
 Route::post('/webhook/fonnte', [\App\Http\Controllers\WhatsappController::class, 'webhook'])->name('whatsapp.webhook');
 Route::get('/whatsapp/report', [\App\Http\Controllers\WhatsappController::class, 'report'])->name('whatsapp.report')->middleware('auth');
-Route::post('/rombel_siswa/mass_store', [RombelSiswaController::class, 'mass_store'])->name('rombel_siswa.mass_store');
 Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile.index');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
