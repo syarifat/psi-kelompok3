@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Siswa;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel; // untuk export Excel
 use PDF; // untuk export PDF (pastikan sudah install barryvdh/laravel-dompdf)
@@ -56,7 +58,7 @@ class AbsensiController extends Controller
             'status' => 'required|in:hadir,izin,sakit,alpha',
             'keterangan' => 'nullable',
         ]);
-        Absensi::create([
+        $absensi = Absensi::create([
             'siswa_id' => $request->siswa_id,
             'tanggal' => $request->tanggal,
             'jam' => $request->jam,
@@ -64,7 +66,22 @@ class AbsensiController extends Controller
             'keterangan' => $request->keterangan,
             'user_id' => auth()->id(),
         ]);
-        return redirect()->route('absensi.index')->with('success', 'Absensi berhasil ditambahkan.');
+
+        // Kirim WA ke orang tua
+        $siswa = Siswa::find($request->siswa_id);
+        if ($siswa && $siswa->no_hp_ortu) {
+            $wa = $siswa->no_hp_ortu;
+            // Pastikan format nomor sudah 62xxx
+            if (substr($wa, 0, 1) === '0') {
+                $wa = '62' . substr($wa, 1);
+            }
+            $message = "Assalamualaikum, Orang Tua/Wali dari {$siswa->nama}.\n" .
+                "Ananda telah melakukan absensi pada tanggal {$request->tanggal} jam {$request->jam} dengan status: {$request->status}.";
+            $fonnte = new FonnteService();
+            $fonnte->sendMessage($wa, $message);
+        }
+
+        return redirect()->route('absensi.index')->with('success', 'Absensi berhasil ditambahkan dan notifikasi WA dikirim.');
     }
 
     /**

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 use App\Models\Siswa;
@@ -28,8 +29,9 @@ class ApiAbsensiController extends Controller
             ], 404);
         }
 
-        $tanggal = date('Y-m-d');
-        $jam = date('H:i:s');
+    date_default_timezone_set('Asia/Jakarta');
+    $tanggal = date('Y-m-d');
+    $jam = date('H:i:s');
 
         // Cek apakah sudah absen hari ini
         $sudahAbsen = Absensi::where('siswa_id', $siswa->id)
@@ -52,6 +54,43 @@ class ApiAbsensiController extends Controller
             'keterangan' => null,
             'user_id' => null,
         ]);
+
+        // Kirim WhatsApp ke orang tua dengan format khusus
+        if ($siswa->no_hp_ortu) {
+            $wa = $siswa->no_hp_ortu;
+            if (substr($wa, 0, 1) === '0') {
+                $wa = '62' . substr($wa, 1);
+            }
+            // Ambil nama kelas
+            $kelas = '-';
+            if ($siswa->rombel && $siswa->rombel->kelas) {
+                $kelas = $siswa->rombel->kelas->nama;
+            }
+            // Nama sekolah (bisa diganti sesuai kebutuhan)
+            $nama_sekolah = 'SMP Islam Tulungagung'; // atau nama sekolah sesuai keinginan
+            // Nama hari
+            $hari = [
+                'Sunday' => 'Minggu',
+                'Monday' => 'Senin',
+                'Tuesday' => 'Selasa',
+                'Wednesday' => 'Rabu',
+                'Thursday' => 'Kamis',
+                'Friday' => 'Jumat',
+                'Saturday' => 'Sabtu',
+            ];
+            $carbon = \Carbon\Carbon::parse($tanggal);
+            $nama_hari = $hari[$carbon->format('l')] ?? $carbon->format('l');
+            $tanggal_indo = $carbon->translatedFormat('d F Y');
+                $message = "Assalamu’alaikum Bapak/Ibu,\n" .
+                    "Kami informasikan bahwa putra/putri Bapak/Ibu:\n" .
+                    "Nama   : {$siswa->nama}\n" .
+                    "Kelas  : {$kelas}\n\n" .
+                    "Hari ini, {$nama_hari}, {$tanggal_indo} pukul {$jam}, tercatat sudah *HADIR* di sekolah.\n" .
+                    "Terima kasih atas perhatian dan kerja samanya. 🙏\n" .
+                    "- {$nama_sekolah}";
+            $fonnte = new \App\Services\FonnteService();
+            $fonnte->sendMessage($wa, $message);
+        }
 
         return response()->json([
             'status' => 'ok',
