@@ -53,7 +53,7 @@ SIPREDI adalah aplikasi presensi digital untuk sekolah berbasis Laravel dan IoT,
 	```
 
 ## Contact
-Email   : syarifahsanit@gmail.com
-No      : 087842949212
+Email: syarifahsanit@gmail.com  
+No: 087842949212
 
 *Copyright © 2025 SAT Project.* 
