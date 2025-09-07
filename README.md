@@ -3,7 +3,7 @@
 
 1. **Clone repository**
 	```bash
-	git clone <repo-url>
+	git clone https://github.com/syarifat/sipredi.git
 	cd sipredi
 	```
 2. **Install dependency**
