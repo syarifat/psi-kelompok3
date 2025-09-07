@@ -42,7 +42,7 @@ class KirimNotifikasiSiswaBelumAbsen extends Command
                     $wa = '62' . substr($wa, 1);
                 }
                 $kelas = ($siswa->rombel && $siswa->rombel->kelas) ? $siswa->rombel->kelas->nama : '-';
-                $nama_sekolah = env('NAMA_SEKOLAH', env('APP_NAME', 'Sekolah'));
+                $nama_sekolah = env('NAMA_SEKOLAH');
                 $hari = [
                     'Sunday' => 'Minggu',
                     'Monday' => 'Senin',
@@ -55,11 +55,11 @@ class KirimNotifikasiSiswaBelumAbsen extends Command
                 $carbon = \Carbon\Carbon::parse($tanggal);
                 $nama_hari = $hari[$carbon->format('l')] ?? $carbon->format('l');
                 $tanggal_indo = $carbon->translatedFormat('d F Y');
-                $message = "Assalamu’alaikum Bapak/Ibu [Nama Orangtua],\n" .
+                $message = "Assalamu’alaikum Bapak/Ibu,\n" .
                     "Kami informasikan bahwa putra/putri Bapak/Ibu:\n" .
                     "Nama   : {$siswa->nama}\n" .
                     "Kelas  : {$kelas}\n\n" .
-                    "Hari ini, {$nama_hari}, {$tanggal_indo} hingga pukul 09:00, tercatat **belum hadir** di sekolah.\n" .
+                    "Hari ini, {$nama_hari}, {$tanggal_indo} hingga pukul 09:00, tercatat *BELUM HADIR* di sekolah.\n" .
                     "Mohon konfirmasi penyebab ketidakhadiran melalui wali kelas.\n" .
                     "Terima kasih atas perhatian dan kerja samanya. 🙏\n" .
                     "- {$nama_sekolah}";

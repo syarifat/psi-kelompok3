@@ -67,7 +67,7 @@ class ApiAbsensiController extends Controller
                 $kelas = $siswa->rombel->kelas->nama;
             }
             // Nama sekolah (bisa diganti sesuai kebutuhan)
-            $nama_sekolah = 'SMP Islam Tulungagung'; // atau nama sekolah sesuai keinginan
+            $nama_sekolah = env('NAMA_SEKOLAH');
             // Nama hari
             $hari = [
                 'Sunday' => 'Minggu',
