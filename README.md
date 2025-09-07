@@ -1,5 +1,5 @@
 
-# Langkah Setup Setelah Clone Repo
+# Langkah Langkah Setup
 
 1. **Clone repository**
 	```bash
@@ -41,7 +41,59 @@
     1 9 * * * cd /home/syarifat/my_project/sipredi && php artisan absensi:tandai-alpha >> /dev/null 2>&1
 	```
 
----
+# SIPREDI - Sistem Presensi Digital Sekolah
+
+SIPREDI adalah aplikasi presensi digital untuk sekolah berbasis Laravel dan IoT, mendukung notifikasi WhatsApp otomatis ke orang tua siswa menggunakan WhatsApp Gateway.
+
+## ✨ Fitur Utama
+
+- Presensi siswa berbasis web & API (RFID/ID)
+- Notifikasi WhatsApp otomatis ke orang tua jika siswa hadir/tidak hadir di sekolah
+- Penandaan otomatis siswa Alpha jika tidak absen sampai jam tertentu
+- Dashboard rekap presensi harian
+- Manajemen data siswa, guru, dan kelas
+
+## 🚀 Langkah Instalasi & Setup
+
+1. **Clone repository**
+	```bash
+	git clone https://github.com/syarifat/sipredi.git
+	cd sipredi
+	```
+2. **Install dependency**
+	```bash
+	composer install
+	npm install
+	```
+3. **Copy file environment**
+	```bash
+	cp .env.example .env
+	```
+4. **Generate application key**
+	```bash
+	php artisan key:generate
+	```
+5. **Edit file `.env`**
+	- Atur koneksi database (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`)
+	- Atur konfigurasi Fonnte, APP_NAME, dan timezone jika perlu
+6. **Jalankan migrasi dan seeder**
+	```bash
+	php artisan migrate --seed
+	```
+7. **Build asset frontend**
+	```bash
+	npm run build
+	```
+8. **Set permission folder storage dan bootstrap/cache**
+	```bash
+	chmod -R 775 storage bootstrap/cache
+	```
+9. **Setting cron untuk absensi otomatis**
+	Jalankan perintah berikut dengan `crontab -e`:
+	```
+	0 9 * * * cd /home/syarifat/my_project/sipredi && php artisan notifikasi:siswa-belum-absen >> /dev/null 2>&1
+	1 9 * * * cd /home/syarifat/my_project/sipredi && php artisan absensi:tandai-alpha >> /dev/null 2>&1
+	```
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
