@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Absensi SMP</title>
+    <title>SMP Islam Tulungagung</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
     /* Hilangkan icon bawaan select di semua browser */

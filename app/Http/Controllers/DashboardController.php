@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $today = now()->toDateString();
+        $today = now('Asia/Jakarta')->toDateString();
 
         $dataSiswaAktif = \App\Models\RombelSiswa::with(['siswa', 'kelas'])->get();
         $jumlahSiswa = $dataSiswaAktif->count();

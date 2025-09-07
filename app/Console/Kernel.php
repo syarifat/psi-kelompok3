@@ -13,7 +13,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('notifikasi:siswa-belum-absen')->dailyAt('09:00');
+        // $schedule->command('notifikasi:siswa-belum-absen')
+        //     ->cron('37 7 * * *')
+        //     ->timezone('Asia/Jakarta');
+
+        // $schedule->command('absensi:tandai-alpha')
+        //     ->cron('38 7 * * *')
+        //     ->timezone('Asia/Jakarta');
     }
 
     /**
