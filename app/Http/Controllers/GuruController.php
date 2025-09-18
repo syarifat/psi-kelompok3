@@ -28,8 +28,21 @@ class GuruController extends Controller
             'alamat' => 'nullable|string',
             'status' => 'required|string',
         ]);
-        Guru::create($request->all());
-        return redirect()->route('guru.index')->with('success', 'Guru berhasil ditambahkan.');
+        $guru = Guru::create($request->all());
+
+        // Tambahkan ke tabel users jika email ada dan belum terdaftar
+        if ($guru->email) {
+            $user = \App\Models\User::where('email', $guru->email)->first();
+            if (!$user) {
+                \App\Models\User::create([
+                    'name' => $guru->nama,
+                    'email' => $guru->email,
+                    'password' => null,
+                    'role' => 'guru',
+                ]);
+            }
+        }
+        return redirect()->route('guru.index')->with('success', 'Guru berhasil ditambahkan dan akun user guru dibuat.');
     }
 
     public function edit($id)

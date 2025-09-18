@@ -50,3 +50,7 @@ Route::post('/webhook/fonnte', [\App\Http\Controllers\WhatsappController::class,
 Route::get('/whatsapp/report', [\App\Http\Controllers\WhatsappController::class, 'report'])->name('whatsapp.report')->middleware('auth');
 Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile.index');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('profile.edit');
+use App\Http\Controllers\SetPasswordController;
+// Set Password Guru (tanpa middleware auth, agar guru bisa akses langsung)
+Route::get('/set-password', [SetPasswordController::class, 'create'])->name('set-password.create');
+Route::post('/set-password', [SetPasswordController::class, 'store'])->name('set-password.store');
