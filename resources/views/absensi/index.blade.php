@@ -57,33 +57,31 @@
     <table class="min-w-full border-2 border-orange-400 rounded-lg overflow-hidden shadow">
         <thead>
             <tr class="bg-orange-500 text-white">
-                <th class="px-4 py-2 border-orange-400">No</th>
+                <th class="px-4 py-2 border-orange-400 text-center">No</th>
                 <th class="px-4 py-2 border-orange-400">Nama</th>
-                <th class="px-4 py-2 border-orange-400">NIS</th>
-                <th class="px-4 py-2 border-orange-400">Kelas</th> <!-- Tambahkan ini -->
-                <th class="px-4 py-2 border-orange-400">Tanggal</th>
-                <th class="px-4 py-2 border-orange-400">Jam</th>
-                <th class="px-4 py-2 border-orange-400">Status</th>
-                <th class="px-4 py-2 border-orange-400">Keterangan</th>
-                <th class="px-4 py-2 border-orange-400">Aksi</th>
+                <th class="px-4 py-2 border-orange-400 text-center">NIS</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Kelas</th>
+                <th class="px-4 py-2 border-orange-400 text-center">No Absen</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Tanggal</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Jam</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Status</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Keterangan</th>
+                <th class="px-4 py-2 border-orange-400 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach($absensi as $i => $row)
             <tr class="bg-white border-b border-orange-200 hover:bg-orange-50">
-                <td class="px-4 py-2 border-orange-200">{{ $i+1 }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $i+1 }}</td>
                 <td class="px-4 py-2 border-orange-200">{{ $row->siswa->nama ?? '-' }}</td>
-                <td class="px-4 py-2 border-orange-200">
-                    {{ $row->rombel && $row->rombel->siswa ? $row->rombel->siswa->nis : '-' }}
-                </td>
-                <td class="px-4 py-2 border-orange-200">
-                    {{ $row->rombel && $row->rombel->kelas ? $row->rombel->kelas->nama : '-' }}
-                </td>
-                <td class="px-4 py-2 border-orange-200">{{ $row->tanggal }}</td>
-                <td class="px-4 py-2 border-orange-200">{{ $row->jam }}</td>
-                <td class="px-4 py-2 border-orange-200">{{ $row->status }}</td>
-                <td class="px-4 py-2 border-orange-200">{{ $row->keterangan ?? '-' }}</td>
-                <td class="px-4 py-2 border-orange-200">
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->rombel && $row->rombel->siswa ? $row->rombel->siswa->nis : '-' }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->rombel && $row->rombel->kelas ? $row->rombel->kelas->nama : '-' }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->rombel->nomor_absen ?? ($row->siswa->rombel->nomor_absen ?? '-') }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->tanggal }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->jam }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->status }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">{{ $row->keterangan ?? '-' }}</td>
+                <td class="px-4 py-2 border-orange-200 text-center">
                     <a href="{{ route('absensi.show', $row) }}" class="text-blue-600">Detail</a>
                     <a href="{{ route('absensi.edit', $row) }}" class="text-pink-600 ml-2">Edit</a>
                 </td>
@@ -107,15 +105,16 @@ function fetchAbsensi() {
             let tbody = '';
             data.forEach((row, i) => {
                 tbody += `<tr class="bg-white border-b border-orange-200 hover:bg-orange-50">
-                    <td class="px-4 py-2 border-orange-200">${i+1}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${i+1}</td>
                     <td class="px-4 py-2 border-orange-200">${row.siswa_nama ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">${row.siswa_nis ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">${row.kelas_nama ?? '-'}</td> <!-- Tambahkan ini -->
-                    <td class="px-4 py-2 border-orange-200">${row.tanggal ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">${row.jam ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">${row.status ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">${row.keterangan ?? '-'}</td>
-                    <td class="px-4 py-2 border-orange-200">
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.siswa_nis ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.kelas_nama ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.nomor_absen ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.tanggal ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.jam ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.status ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">${row.keterangan ?? '-'}</td>
+                    <td class="px-4 py-2 border-orange-200 text-center">
                         <a href="/absensi/${row.id}" class="text-blue-600">Detail</a>
                         <a href="/absensi/${row.id}/edit" class="text-pink-600 ml-2">Edit</a>
                     </td>

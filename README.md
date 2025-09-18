@@ -19,7 +19,7 @@ SIPREDI adalah aplikasi presensi digital untuk sekolah berbasis Laravel dan IoT,
 	```
 2. **Install dependency**
 	```bash
-	composer install
+	composer update
 	npm install
 	```
 3. **Copy file environment**

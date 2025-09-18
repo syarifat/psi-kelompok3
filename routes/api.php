@@ -28,9 +28,13 @@ Route::get('/absensi-terbaru', function(Request $request) {
 		});
 	}
 	$absensi = $query->limit(30)->get()->map(function($row) {
+		$rombel = $row->siswa ? $row->siswa->rombel : null;
 		return [
 			'id' => $row->id,
 			'siswa_nama' => $row->siswa->nama ?? '-',
+			'nomor_absen' => $rombel ? $rombel->nomor_absen : '-',
+			'siswa_nis' => $row->siswa->nis ?? '-',
+			'kelas_nama' => ($rombel && $rombel->kelas) ? $rombel->kelas->nama : '-',
 			'tanggal' => $row->tanggal,
 			'jam' => $row->jam,
 			'status' => ucfirst($row->status),

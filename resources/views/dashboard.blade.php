@@ -38,8 +38,8 @@
             <div class="text-3xl font-bold text-red-700">{{ $jumlahTanpaKeterangan ?? 0 }}</div>
             <div class="mt-2 text-red-800">Tanpa Keterangan</div>
         </div>
-        <!-- Belum Hadir -->
-        <div @click="selected = 'belumhadir'" class="cursor-pointer bg-gray-100 shadow rounded-lg p-6 text-center flex flex-col items-center hover:ring-2 hover:ring-gray-400 transition">
+        <!-- Belum Hadir (tidak bisa diklik) -->
+        <div class="bg-gray-100 shadow rounded-lg p-6 text-center flex flex-col items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-700 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -57,16 +57,16 @@
                     <thead>
                         <tr class="bg-blue-500 text-white border-b-2 border-blue-400">
                             <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">NIS</th>
-                            <th class="px-4 py-2">Kelas</th>
+                            <th class="px-4 py-2 text-center">NIS</th>
+                            <th class="px-4 py-2 text-center">Kelas</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataSiswaAktif as $row)
                         <tr class="bg-white border-b border-blue-200">
                             <td class="px-4 py-2">{{ $row->siswa->nama ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->siswa->nis ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->kelas->nama ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->nis ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->kelas->nama ?? '-' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -80,22 +80,20 @@
                     <thead>
                         <tr class="bg-green-500 text-white border-b-2 border-green-400">
                             <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">NIS</th>
-                            <th class="px-4 py-2">Kelas</th>
-                            <th class="px-4 py-2">Tanggal</th>
-                            <th class="px-4 py-2">Jam</th>
+                            <th class="px-4 py-2 text-center">NIS</th>
+                            <th class="px-4 py-2 text-center">Kelas</th>
+                            <th class="px-4 py-2 text-center">Tanggal</th>
+                            <th class="px-4 py-2 text-center">Jam</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataHadir as $row)
                         <tr class="bg-white border-b border-green-200">
                             <td class="px-4 py-2">{{ $row->siswa->nama ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->siswa->nis ?? '-' }}</td>
-                            <td class="px-4 py-2">
-                                {{ $row->rombel && $row->rombel->kelas ? $row->rombel->kelas->nama : '-' }}
-                            </td>
-                            <td class="px-4 py-2">{{ $row->tanggal }}</td>
-                            <td class="px-4 py-2">{{ $row->jam }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->nis ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->rombel && $row->rombel->kelas ? $row->rombel->kelas->nama : '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->tanggal }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->jam }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -109,24 +107,22 @@
                     <thead>
                         <tr class="bg-yellow-500 text-white border-b-2 border-yellow-400">
                             <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">NIS</th>
-                            <th class="px-4 py-2">Kelas</th>
-                            <th class="px-4 py-2">Tanggal</th>
-                            <th class="px-4 py-2">Jam</th>
-                            <th class="px-4 py-2">Keterangan</th>
+                            <th class="px-4 py-2 text-center">NIS</th>
+                            <th class="px-4 py-2 text-center">Kelas</th>
+                            <th class="px-4 py-2 text-center">Tanggal</th>
+                            <th class="px-4 py-2 text-center">Jam</th>
+                            <th class="px-4 py-2 text-center">Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataSakitIzin as $row)
                         <tr class="bg-white border-b border-yellow-200">
                             <td class="px-4 py-2">{{ $row->siswa->nama ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->siswa->nis ?? '-' }}</td>
-                            <td class="px-4 py-2">
-                                {{ $row->siswa->rombel && $row->siswa->rombel->kelas ? $row->siswa->rombel->kelas->nama : '-' }}
-                            </td>
-                            <td class="px-4 py-2">{{ $row->tanggal }}</td>
-                            <td class="px-4 py-2">{{ $row->jam }}</td>
-                            <td class="px-4 py-2">{{ $row->keterangan ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->nis ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->rombel && $row->siswa->rombel->kelas ? $row->siswa->rombel->kelas->nama : '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->tanggal }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->jam }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->keterangan ?? '-' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -140,22 +136,20 @@
                     <thead>
                         <tr class="bg-red-500 text-white border-b-2 border-red-400">
                             <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">NIS</th>
-                            <th class="px-4 py-2">Kelas</th>
-                            <th class="px-4 py-2">Tanggal</th>
-                            <th class="px-4 py-2">Jam</th>
+                            <th class="px-4 py-2 text-center">NIS</th>
+                            <th class="px-4 py-2 text-center">Kelas</th>
+                            <th class="px-4 py-2 text-center">Tanggal</th>
+                            <th class="px-4 py-2 text-center">Jam</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataTanpaKeterangan as $row)
                         <tr class="bg-white border-b border-red-200">
                             <td class="px-4 py-2">{{ $row->siswa->nama ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->siswa->nis ?? '-' }}</td>
-                            <td class="px-4 py-2">
-                                {{ $row->siswa->rombel && $row->siswa->rombel->kelas ? $row->siswa->rombel->kelas->nama : '-' }}
-                            </td>
-                            <td class="px-4 py-2">{{ $row->tanggal }}</td>
-                            <td class="px-4 py-2">{{ $row->jam }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->nis ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->siswa->rombel && $row->siswa->rombel->kelas ? $row->siswa->rombel->kelas->nama : '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->tanggal }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->jam }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -169,16 +163,16 @@
                     <thead>
                         <tr class="bg-gray-500 text-white border-b-2 border-gray-400">
                             <th class="px-4 py-2">Nama</th>
-                            <th class="px-4 py-2">NIS</th>
-                            <th class="px-4 py-2">Kelas</th>
+                            <th class="px-4 py-2 text-center">NIS</th>
+                            <th class="px-4 py-2 text-center">Kelas</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataBelumHadir as $row)
                         <tr class="bg-white border-b border-gray-200">
                             <td class="px-4 py-2">{{ $row->nama ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->nis ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $row->kelas->nama ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->nis ?? '-' }}</td>
+                            <td class="px-4 py-2 text-center">{{ $row->kelas->nama ?? '-' }}</td>
                         </tr>
                         @endforeach
                     </tbody>

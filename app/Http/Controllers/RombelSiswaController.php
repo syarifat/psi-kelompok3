@@ -74,15 +74,23 @@ class RombelSiswaController extends Controller
 
     public function mass_store(Request $request)
     {
-        foreach ($request->siswa_id as $siswaId) {
-            \App\Models\RombelSiswa::updateOrCreate([
-                'siswa_id' => $siswaId,
+        // Ambil semua siswa yang akan dimasukkan, urut nama ASC
+        $siswaList = \App\Models\Siswa::whereIn('id', $request->siswa_id)
+            ->orderBy('nama', 'asc')->get();
+
+        $nomorAbsen = 1;
+        foreach ($siswaList as $siswa) {
+            $rombel = \App\Models\RombelSiswa::updateOrCreate([
+                'siswa_id' => $siswa->id,
                 'tahun_ajaran_id' => $request->tahun_ajaran_id,
             ], [
                 'kelas_id' => $request->kelas_id,
             ]);
+            $rombel->nomor_absen = $nomorAbsen;
+            $rombel->save();
+            $nomorAbsen++;
         }
-        return redirect()->route('rombel_siswa.index')->with('success', 'Siswa berhasil dimasukkan ke kelas.');
+        return redirect()->route('rombel_siswa.index')->with('success', 'Siswa berhasil dimasukkan ke kelas dan nomor absen diurutkan.');
     }
 
     public function gantiKelasMassal(Request $request)
@@ -93,8 +101,37 @@ class RombelSiswaController extends Controller
         ]);
 
         try {
+            // Ambil rombel lama sebelum update
+            $rombelsLama = \App\Models\RombelSiswa::whereIn('id', $request->ids)->get();
+            $kelasLamaIds = $rombelsLama->pluck('kelas_id')->unique();
+
+            // Update kelas_id ke kelas baru
             \App\Models\RombelSiswa::whereIn('id', $request->ids)
                 ->update(['kelas_id' => $request->kelas_baru_id]);
+
+            // Update nomor_absen di kelas lama
+            foreach ($kelasLamaIds as $kelasId) {
+                $rombels = \App\Models\RombelSiswa::where('kelas_id', $kelasId)
+                    ->orderBy('nomor_absen')->get();
+                $siswaList = $rombels->sortBy(function($r) { return $r->siswa->nama ?? ''; });
+                $no = 1;
+                foreach ($siswaList as $rombel) {
+                    $rombel->nomor_absen = $no;
+                    $rombel->save();
+                    $no++;
+                }
+            }
+
+            // Update nomor_absen di kelas baru
+            $rombelsBaru = \App\Models\RombelSiswa::where('kelas_id', $request->kelas_baru_id)
+                ->get()->sortBy(function($r) { return $r->siswa->nama ?? ''; });
+            $no = 1;
+            foreach ($rombelsBaru as $rombel) {
+                $rombel->nomor_absen = $no;
+                $rombel->save();
+                $no++;
+            }
+
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);

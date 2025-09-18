@@ -101,7 +101,7 @@ class ApiAbsensiController extends Controller
 
     public function index(Request $request)
     {
-        $absensi = Absensi::with(['rombel.siswa', 'rombel.kelas'])
+        $absensi = Absensi::with(['siswa.rombel.kelas'])
             ->when($request->search, function($q) use ($request) {
                 $q->whereHas('siswa', function($qq) use ($request) {
                     $qq->where('nama', 'like', '%' . $request->search . '%')
@@ -122,9 +122,9 @@ class ApiAbsensiController extends Controller
         return response()->json($absensi->map(function($row) {
             return [
                 'id' => $row->id,
-                'siswa_nama' => $row->rombel && $row->rombel->siswa ? $row->rombel->siswa->nama : '-',
-                'siswa_nis' => $row->rombel && $row->rombel->siswa ? $row->rombel->siswa->nis : '-',
-                'kelas_nama' => $row->rombel && $row->rombel->kelas ? $row->rombel->kelas->nama : '-',
+                'siswa_nama' => $row->siswa ? $row->siswa->nama : '-',
+                'siswa_nis' => $row->siswa ? $row->siswa->nis : '-',
+                'kelas_nama' => ($row->siswa && $row->siswa->rombel && $row->siswa->rombel->kelas) ? $row->siswa->rombel->kelas->nama : '-',
                 'tanggal' => $row->tanggal,
                 'jam' => $row->jam,
                 'status' => $row->status,

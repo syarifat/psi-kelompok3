@@ -26,7 +26,7 @@
                 <option value="">-- Pilih Role --</option>
                 <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
                 <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="wali_kelas" {{ old('role') == 'wali_kelas' ? 'selected' : '' }}>Wali Kelas</option>
+                <!-- <option value="wali_kelas" {{ old('role') == 'wali_kelas' ? 'selected' : '' }}>Wali Kelas</option> -->
             </select>
             @error('role')<div class="text-red-500 text-sm">{{ $message }}</div>@enderror
         </div>
