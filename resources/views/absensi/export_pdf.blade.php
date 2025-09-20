@@ -17,6 +17,7 @@
             <tr>
                 <th>No</th>
                 <th>Nama</th>
+                <th>No. Absen</th>
                 <th>NIS</th>
                 <th>Tanggal</th>
                 <th>Jam</th>
@@ -29,6 +30,7 @@
             <tr>
                 <td>{{ $i+1 }}</td>
                 <td>{{ $row->siswa->nama ?? '-' }}</td>
+                <td>{{ $row->siswa->rombel->nomor_absen ?? '-' }}</td>
                 <td>{{ $row->siswa->nis ?? '-' }}</td>
                 <td>{{ $row->tanggal }}</td>
                 <td>{{ $row->jam }}</td>
