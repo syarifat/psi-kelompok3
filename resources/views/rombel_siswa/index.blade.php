@@ -58,6 +58,7 @@
                     <th class="px-4 py-2 text-center font-semibold">
                         <input type="checkbox" id="check-all">
                     </th>
+                    <th class="px-4 py-2 text-center font-semibold">No. Absen</th>
                     <th class="px-4 py-2 text-left font-semibold">Nama Siswa</th>
                     <th class="px-4 py-2 text-center font-semibold">NIS</th>
                     <th class="px-4 py-2 text-center font-semibold">Kelas</th>
@@ -91,6 +92,7 @@ function fetchRombel() {
                     <td class="px-4 py-2 text-center">
                         <input type="checkbox" class="check-siswa" value="${row.id}">
                     </td>
+                    <td class="px-4 py-2 text-center">${row.nomor_absen ?? '-'}</td>
                     <td class="px-4 py-2 text-left">${row.siswa_nama ?? '-'}</td>
                     <td class="px-4 py-2 text-center">${row.siswa_nis ?? '-'}</td>
                     <td class="px-4 py-2 text-center">${row.kelas_nama ?? '-'}</td>

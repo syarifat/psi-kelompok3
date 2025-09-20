@@ -19,43 +19,13 @@
             <span class="font-bold text-lg text-gray-700">Absensi SMP</span>
         </div>
         <!-- Navigation Links -->
+        @php
+            $role = Auth::user()->role ?? '';
+        @endphp
+
         <nav class="flex-1 py-6 px-4 flex flex-col gap-2">
-            @if(auth()->user()->role === 'guru')
-                <a href="{{ route('dashboard') }}"
-                    class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Dashboard Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" />
-                    </svg>
-                    Dashboard
-                </a>
-                <a href="{{ route('absensi.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Absensi Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Absensi
-                </a>
-                <a href="{{ route('siswa.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Siswa Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-                    </svg>
-                    Siswa
-                </a>
-                <a href="{{ route('rombel_siswa.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Rombel Siswa Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6M3 20h5v-2a4 4 0 013-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    Rombel Siswa
-                </a>
-            @else
-                {{-- Tampilkan semua menu untuk admin/superadmin --}}
+            {{-- Menu untuk superadmin dan admin (full access) --}}
+            @if($role === 'superadmin' || $role === 'admin')
                 <a href="{{ route('dashboard') }}"
                    class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
                     <!-- Dashboard Icon -->
@@ -72,23 +42,6 @@
                     </svg>
                     Absensi
                 </a>
-                <a href="{{ route('kelas.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Kelas Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                    </svg>
-                    Kelas
-                </a>
-                <a href="{{ route('siswa.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Siswa Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-                    </svg>
-                    Siswa
-                </a>
                 <a href="{{ route('rombel_siswa.index') }}"
                    class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
                     <!-- Rombel Siswa Icon -->
@@ -97,59 +50,144 @@
                     </svg>
                     Rombel Siswa
                 </a>
-                <a href="{{ route('guru.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Guru Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-                    </svg>
-                    Guru
-                </a>
-                <a href="{{ route('tahun_ajaran.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- Tahun Ajaran Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2v4M8 2v4M3 10h18" />
-                    </svg>
-                    Tahun Ajaran
-                </a>
-                <a href="{{ route('user.index') }}"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- User Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-                    </svg>
-                    User
-                </a>
-                {{-- Menu WhatsApp --}}
-                <a href="#" @click.prevent="whatsappOpen = !whatsappOpen"
-                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
-                    <!-- WhatsApp Icon -->
-                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.72 11.06a6 6 0 10-8.48 8.48l.36.36a1 1 0 001.41 0l2.12-2.12a1 1 0 000-1.41l-.36-.36a1 1 0 01-.29-.7V16a1 1 0 01.29-.7l2.12-2.12a1 1 0 011.41 0l.36.36a1 1 0 000 1.41l-2.12 2.12a1 1 0 01-1.41 0l-.36-.36a6 6 0 008.48-8.48z" />
-                    </svg>
-                    WhatsApp
-                    <svg class="h-4 w-4 ml-auto text-gray-400 group-hover:text-orange-500 transition" fill="none" viewBox="0 0 20 20">
-                        <path d="M5.5 8l4.5 4.5L14.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
-                <div x-show="whatsappOpen" x-transition class="pl-8 flex flex-col gap-1">
-                    <a href="{{ route('whatsapp.index') }}"
-                       class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
-                        <span class="text-base">Broadcast</span>
-                    </a>
-                    <a href="{{ route('whatsapp.qr') }}"
-                       class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
-                        <span class="text-base">QR</span>
-                    </a>
-                    <a href="{{ route('whatsapp.report') }}"
-                       class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
-                        <span class="text-base">Report</span>
-                    </a>
+                {{-- Master Data Group --}}
+                <div x-data="{ open: false }">
+                    <button @click="open = !open"
+                        class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group w-full">
+                        <!-- Master Data Icon -->
+                        <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        Master Data
+                        <svg class="h-4 w-4 ml-auto text-gray-400 group-hover:text-orange-500 transition" fill="none" viewBox="0 0 20 20">
+                            <path d="M5.5 8l4.5 4.5L14.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="pl-8 flex flex-col gap-1">
+                        <a href="{{ route('siswa.index') }}"
+                           class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Siswa Icon -->
+                            <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+                            </svg>
+                            Siswa
+                        </a>
+                        <a href="{{ route('kelas.index') }}"
+                           class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Kelas Icon -->
+                            <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                            Kelas
+                        </a>
+                        <a href="{{ route('guru.index') }}"
+                           class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Guru Icon -->
+                            <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+                            </svg>
+                            Guru
+                        </a>
+                        <a href="{{ route('tahun_ajaran.index') }}"
+                           class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Tahun Ajaran Icon -->
+                            <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2v4M8 2v4M3 10h18" />
+                            </svg>
+                            Tahun Ajaran
+                        </a>
+                        <a href="{{ route('user.index') }}"
+                           class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- User Icon -->
+                            <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+                            </svg>
+                            User
+                        </a>
+                    </div>
                 </div>
+                {{-- Menu WhatsApp --}}
+                <div x-data="{ open: false }">
+                    <button @click="open = !open"
+                        class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group w-full">
+                        <!-- WhatsApp Icon (hitam) -->
+                        <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.52 3.48A12 12 0 003.48 20.52a12 12 0 0017.04-17.04zm-8.52 17.04a9.52 9.52 0 119.52-9.52 9.52 9.52 0 01-9.52 9.52zm4.76-7.14c-.2-.1-1.18-.58-1.36-.64-.18-.06-.31-.1-.44.1-.13.2-.5.64-.62.78-.12.14-.23.16-.43.06-.2-.1-.84-.31-1.6-.99-.59-.52-.99-1.16-1.11-1.36-.12-.2-.01-.31.09-.41.09-.09.2-.23.3-.34.1-.11.13-.19.2-.32.07-.13.03-.25-.02-.35-.05-.1-.44-1.06-.6-1.45-.16-.39-.32-.34-.44-.35-.11-.01-.25-.01-.39-.01-.13 0-.34.05-.52.25-.18.2-.7.68-.7 1.66s.72 1.93.82 2.07c.1.14 1.41 2.16 3.42 2.95.48.17.85.27 1.14.34.48.1.92.09 1.27.06.39-.04 1.18-.48 1.35-.95.17-.47.17-.87.12-.95-.05-.08-.18-.13-.38-.23z"/>
+                        </svg>
+                        WhatsApp
+                        <svg class="h-4 w-4 ml-auto text-gray-400 group-hover:text-orange-500 transition" fill="none" viewBox="0 0 20 20">
+                            <path d="M5.5 8l4.5 4.5L14.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="pl-8 flex flex-col gap-1">
+                        <a href="{{ route('whatsapp.index') }}"
+                        class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Broadcast Icon (hitam) -->
+                            <svg class="h-4 w-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.5 10a7.5 7.5 0 1115 0 7.5 7.5 0 01-15 0zm7.5-5a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/>
+                            </svg>
+                            <span class="text-base">Broadcast</span>
+                        </a>
+                        <a href="{{ route('whatsapp.qr') }}"
+                        class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- QR Icon (hitam) -->
+                            <svg class="h-4 w-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <rect x="3" y="3" width="4" height="4"/>
+                                <rect x="13" y="3" width="4" height="4"/>
+                                <rect x="3" y="13" width="4" height="4"/>
+                                <rect x="13" y="13" width="4" height="4"/>
+                            </svg>
+                            <span class="text-base">QR</span>
+                        </a>
+                        <a href="{{ route('whatsapp.report') }}"
+                        class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 px-3 py-2 rounded transition">
+                            <!-- Report Icon (hitam) -->
+                            <svg class="h-4 w-4 text-black" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 3h14v2H3V3zm0 4h14v2H3V7zm0 4h14v2H3v-2zm0 4h14v2H3v-2z"/>
+                            </svg>
+                            <span class="text-base">Report</span>
+                        </a>
+                    </div>
+                </div>
+            @else
+            {{-- Menu untuk guru (hanya akses terbatas) --}}
+                <a href="{{ route('dashboard') }}"
+                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
+                    <!-- Dashboard Icon -->
+                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="{{ route('absensi.index') }}"
+                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
+                    <!-- Absensi Icon -->
+                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Absensi
+                </a>
+                <a href="{{ route('rombel_siswa.index') }}"
+                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
+                    <!-- Rombel Siswa Icon -->
+                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6M3 20h5v-2a4 4 0 013-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Rombel Siswa
+                </a>
+                <a href="{{ route('siswa.index') }}"
+                   class="flex items-center gap-2 text-gray-700 hover:text-orange-500 hover:bg-orange-100/60 font-medium px-3 py-2 rounded transition group">
+                    <!-- Siswa Icon -->
+                    <svg class="h-5 w-5 text-black group-hover:text-orange-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
+                    </svg>
+                    Siswa
+                </a>
             @endif
         </nav>
         <!-- Profile Section -->

@@ -25,6 +25,7 @@ class RombelSiswaApiController extends Controller
         $data = $query->orderBy('id', 'desc')->get()->map(function($row) {
             return [
                 'id' => $row->id,
+                'nomor_absen' => $row->nomor_absen ?? '-',
                 'siswa_nama' => $row->siswa->nama ?? '-',
                 'siswa_nis' => $row->siswa->nis ?? '-',
                 'kelas_nama' => $row->kelas->nama ?? '-',
