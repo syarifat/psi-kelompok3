@@ -54,3 +54,9 @@ use App\Http\Controllers\SetPasswordController;
 // Set Password Guru (tanpa middleware auth, agar guru bisa akses langsung)
 Route::get('/set-password', [SetPasswordController::class, 'create'])->name('set-password.create');
 Route::post('/set-password', [SetPasswordController::class, 'store'])->name('set-password.store');
+
+#testing export absensi
+Route::get('/absensi/export/{type}', [App\Http\Controllers\RekapAbsensiController::class, 'export'])->name('absensi.export');
+#testing export rombel siswa
+Route::get('/rombel_siswa/export/pdf', [App\Http\Controllers\RombelSiswaController::class, 'exportPdf'])->name('rombel_siswa.export.pdf');
+

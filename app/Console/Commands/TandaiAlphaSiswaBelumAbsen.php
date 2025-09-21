@@ -40,7 +40,7 @@ class TandaiAlphaSiswaBelumAbsen extends Command
                     'tanggal' => $tanggal,
                     'jam' => $jam,
                     'status' => 'Alpha',
-                    'keterangan' => 'Otomatis Alpha karena tidak absen sampai jam 9',
+                    'keterangan' => 'Ditandai alpha oleh sistem',
                     'user_id' => null,
                 ]);
                 $jumlah++;

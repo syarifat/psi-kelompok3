@@ -7,6 +7,8 @@ use App\Models\RombelSiswa;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\TahunAjaran;
+use Carbon\Carbon;
+use PDF;
 
 class RombelSiswaController extends Controller
 {
@@ -136,5 +138,28 @@ class RombelSiswaController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $kelasId = $request->query('kelas_id');
+        if (!$kelasId) {
+            abort(400, 'kelas_id wajib diisi');
+        }
+
+        $kelas = \App\Models\Kelas::findOrFail($kelasId);
+        $rombel = \App\Models\RombelSiswa::with('siswa', 'kelas', 'tahunAjaran')
+            ->where('kelas_id', $kelasId)
+            ->orderBy('nomor_absen')
+            ->get();
+
+        $fileName = "Daftar Siswa {$kelas->nama} - " . Carbon::now()->format('Y-m-d') . ".pdf";
+
+        $pdf = PDF::loadView('rombel_siswa.pdf', [
+            'kelas' => $kelas,
+            'rombel' => $rombel
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->download($fileName);
     }
 }
