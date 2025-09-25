@@ -161,7 +161,7 @@
                         <svg class="h-5 w-5 text-black group-hover:text-blue-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2M5 9h14v10a2 2 0 01-2 2H7a2 2 0 01-2-2V9z" />
                         </svg>
-                        Transaksi
+                        Transaksi (POS)
                     </a>
                     <a href="{{ route('pos.laporan') }}"
                        class="flex items-center gap-2 text-gray-700 hover:text-blue-600 hover:bg-blue-100/60 font-medium px-3 py-2 rounded transition group">
@@ -169,7 +169,7 @@
                         <svg class="h-5 w-5 text-black group-hover:text-blue-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6m-6 0h6" />
                         </svg>
-                        Laporan
+                        Laporan Transaksi
                     </a>
                     <!-- Garis pemisah antara Kantin Cashless dan Setting -->
                     <div class="border-t border-gray-300 my-3"></div>
