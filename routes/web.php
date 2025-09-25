@@ -60,3 +60,28 @@ Route::get('/absensi/export/{type}', [App\Http\Controllers\RekapAbsensiControlle
 #testing export rombel siswa
 Route::get('/rombel_siswa/export/pdf', [App\Http\Controllers\RombelSiswaController::class, 'exportPdf'])->name('rombel_siswa.export.pdf');
 
+// POS Kantin Cashless
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pos/topup', function() {
+        return view('pos.topup');
+    })->name('pos.topup');
+    Route::get('/pos/transaksi', function() {
+        return view('pos.transaksi');
+    })->name('pos.transaksi');
+    Route::get('/pos/laporan', function() {
+        return view('pos.laporan');
+    })->name('pos.laporan');
+    Route::get('/pos/masterdata', function() {
+        return view('pos.masterdata');
+    })->name('pos.masterdata');
+    Route::get('/pos/saldo', function() {
+        return view('pos.saldo');
+    })->name('saldo.index');
+    Route::get('/pos/kantin', function() {
+        return view('pos.kantin');
+    })->name('kantin.index');
+    Route::get('/pos/barang', function() {
+        return view('pos.barang');
+    })->name('barang.index');
+});
+
