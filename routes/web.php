@@ -9,6 +9,9 @@ use App\Http\Controllers\AbsensiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RombelSiswaController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\SaldoController;
+use App\Http\Controllers\KantinController;
+use App\Http\Controllers\BarangController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,7 +63,7 @@ Route::get('/absensi/export/{type}', [App\Http\Controllers\RekapAbsensiControlle
 #testing export rombel siswa
 Route::get('/rombel_siswa/export/pdf', [App\Http\Controllers\RombelSiswaController::class, 'exportPdf'])->name('rombel_siswa.export.pdf');
 
-// POS Kantin Cashless
+// Dummy routes for POS system (to be replaced with actual controllers and views)
 Route::middleware(['auth'])->group(function () {
     Route::get('/pos/topup', function() {
         return view('pos.topup');
@@ -74,14 +77,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pos/masterdata', function() {
         return view('pos.masterdata');
     })->name('pos.masterdata');
-    Route::get('/pos/saldo', function() {
-        return view('pos.saldo');
-    })->name('saldo.index');
-    Route::get('/pos/kantin', function() {
-        return view('pos.kantin');
-    })->name('kantin.index');
-    Route::get('/pos/barang', function() {
-        return view('pos.barang');
-    })->name('barang.index');
+//     Route::get('/pos/saldo', function() {
+//         return view('pos.saldo');
+//     })->name('saldo.index');
+//     Route::get('/pos/kantin', function() {
+//         return view('pos.kantin');
+//     })->name('kantin.index');
+//     Route::get('/pos/barang', function() {
+//         return view('pos.barang');
+//     })->name('barang.index');
 });
 
+// Kantin Cashless
+Route::get('/pos/saldo', [SaldoController::class, 'index'])->name('saldo.index');
+Route::get('/pos/kantin', [KantinController::class, 'index'])->name('kantin.index');
+Route::get('/pos/barang', [BarangController::class, 'index'])->name('barang.index');

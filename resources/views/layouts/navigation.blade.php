@@ -16,7 +16,7 @@
             <a href="{{ route('dashboard') }}">
                 <img src="{{ asset('logo.svg') }}" alt="Logo" class="h-10 w-10">
             </a>
-            <span class="font-bold text-lg text-gray-700">Absensi SMP</span>
+            <span class="font-bold text-lg text-gray-700">siPredi</span>
         </div>
         <!-- Navigation Links -->
         @php
