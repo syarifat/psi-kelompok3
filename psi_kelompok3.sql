@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 22 Sep 2025 pada 09.47
+-- Waktu pembuatan: 06 Okt 2025 pada 06.22
 -- Versi server: 10.11.13-MariaDB-log
 -- Versi PHP: 8.2.29
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sipredi`
+-- Database: `psi_kelompok3`
 --
 
 -- --------------------------------------------------------
@@ -72,7 +72,21 @@ INSERT INTO `absensi` (`id`, `siswa_id`, `tanggal`, `jam`, `status`, `keterangan
 (26, 11, '2025-09-21', '09:00:00', 'alpha', 'Otomatis Alpha karena tidak absen sampai jam 9', NULL, '2025-09-21 13:11:00', '2025-09-21 13:11:00'),
 (27, 12, '2025-09-21', '09:00:00', 'alpha', 'Otomatis Alpha karena tidak absen sampai jam 9', NULL, '2025-09-21 13:11:00', '2025-09-21 13:11:00'),
 (28, 13, '2025-09-21', '09:00:00', 'alpha', 'Otomatis Alpha karena tidak absen sampai jam 9', NULL, '2025-09-21 13:11:00', '2025-09-21 13:11:00'),
-(29, 14, '2025-09-21', '09:00:00', 'alpha', 'Otomatis Alpha karena tidak absen sampai jam 9', NULL, '2025-09-21 13:11:00', '2025-09-21 13:11:00');
+(29, 14, '2025-09-21', '09:00:00', 'alpha', 'Otomatis Alpha karena tidak absen sampai jam 9', NULL, '2025-09-21 13:11:00', '2025-09-21 13:11:00'),
+(30, 1, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(31, 2, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(32, 3, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(33, 4, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(34, 5, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(35, 6, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(36, 7, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(37, 8, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(38, 9, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(39, 10, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(40, 11, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(41, 12, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(42, 13, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14'),
+(43, 14, '2025-09-25', '09:00:00', 'alpha', 'Ditandai alpha oleh sistem', NULL, '2025-09-25 00:59:14', '2025-09-25 00:59:14');
 
 -- --------------------------------------------------------
 
@@ -85,8 +99,19 @@ CREATE TABLE `barang` (
   `kantin_id` int(11) NOT NULL,
   `nama_barang` varchar(100) NOT NULL,
   `harga_barang` decimal(12,2) NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `barang`
+--
+
+INSERT INTO `barang` (`barang_id`, `kantin_id`, `nama_barang`, `harga_barang`, `created_at`, `updated_at`) VALUES
+(9, 7, 'Sate Taichan', 12000.00, '2025-10-02 22:51:59', '2025-10-02 23:03:00'),
+(11, 7, 'Kimchi', 23000.00, '2025-10-03 01:10:17', '2025-10-03 01:10:17'),
+(12, 7, 'Nasi Goreng', 15000.00, '2025-10-03 01:11:05', '2025-10-03 01:11:05'),
+(13, 7, 'Sate Tahu', 3000.00, '2025-10-03 01:11:21', '2025-10-03 01:11:21');
 
 -- --------------------------------------------------------
 
@@ -197,8 +222,18 @@ CREATE TABLE `job_batches` (
 CREATE TABLE `kantin` (
   `kantin_id` int(11) NOT NULL,
   `nama_kantin` varchar(100) NOT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data untuk tabel `kantin`
+--
+
+INSERT INTO `kantin` (`kantin_id`, `nama_kantin`, `created_at`, `updated_at`) VALUES
+(5, 'Kantin Utamaa', '2025-10-01 08:20:52', '2025-10-02 21:12:40'),
+(6, 'Kantin Cobaa', '2025-10-02 21:20:05', '2025-10-02 21:25:37'),
+(7, 'Kantin Utama', '2025-10-02 21:25:52', '2025-10-02 21:25:52');
 
 -- --------------------------------------------------------
 
@@ -294,7 +329,8 @@ CREATE TABLE `reports` (
 --
 
 INSERT INTO `reports` (`id`, `message_id`, `target`, `message`, `status`, `state`, `stateid`, `created_at`, `updated_at`) VALUES
-(1, '121572963', '6287842949212', 'tes', 'pending', NULL, NULL, '2025-09-21 12:56:43', '2025-09-21 12:56:43');
+(1, '121572963', '6287842949212', 'tes', 'pending', NULL, NULL, '2025-09-21 12:56:43', '2025-09-21 12:56:43'),
+(2, '122385941', '6287842949212', 'p', 'pending', NULL, NULL, '2025-09-25 13:08:58', '2025-09-25 13:08:58');
 
 -- --------------------------------------------------------
 
@@ -344,6 +380,15 @@ CREATE TABLE `saldo` (
   `saldo` decimal(12,2) DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data untuk tabel `saldo`
+--
+
+INSERT INTO `saldo` (`id`, `siswa_id`, `saldo`) VALUES
+(1, 1, 50000.00),
+(2, 2, 75000.00),
+(3, 3, 100000.00);
+
 -- --------------------------------------------------------
 
 --
@@ -364,9 +409,11 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('8NxSRN9CskzXk2HRkzaoetTFmvMe3brC6jQXTKWu', 9, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMzdpbjhpQjRMbDhEdUlUMkF2MmpPdHlQZUl6ZEFmWjljeXExbnJxUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9zaXN3YSI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjk7fQ==', 1758464184),
-('dsHNKiqTi1Edw9Pd3kwveXnz5xJApg5EKGtn8EP8', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiazE5SXF6a1Nsb3RBM04zdzVjaExsSEQzTnNoajhuQVVMcVZFWWRGZSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NTQ6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9yZWthcC9wZGY/a2VsYXM9MyZwZXJpb2Q9MjAyNS0wOSI7fX0=', 1758445975),
-('Kxwq0nJzXQT4gX1wOCAUysyIrUmRzmTG7vhrajlW', 9, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiOEY2V24xYXJoNmZtM1JMbWtSUm96ZEVGMnJuclBpRXFCWlhzbDhhTSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6OTt9', 1758449083);
+('8XZ9GP0BIGt0CNMvJch0CrdyJa9qQsR4dmsumzkK', 12, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoieEN3cW5Ccjl4Z1ZnRUNqTVdVT05uQkhuV0VsUWtFanAyNjg4c1dDZCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9iYXJhbmcvY3JlYXRlIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTI7czo3OiJzaWRlYmFyIjtzOjc6InBheW1lbnQiO30=', 1759454169),
+('bFmIfos8ZtfggAXsW6AGmPJ9AJcT7Ju81gHItZSu', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQTl4WG5ESEdqenFSSmRuZkE4YWpNNnY5UkJYVGNsTWs0QzVQWEVSdCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fX0=', 1759731222),
+('sXQOUWsKPAiYCefbb2tQzwIluId6O4h8KXEbpfrB', 12, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiN1RaR2UzT1JES2wxd1VhbWh3Q1VtanBIeW9lMEpVQldjRXJaWDkyTiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9wb3MvYmFyYW5nIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTI7czo3OiJzaWRlYmFyIjtzOjc6InBheW1lbnQiO30=', 1759731295),
+('ws9S0I9Dqo1XY4vqbxCB9vW5cB6EQNQkSxNwlnyr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibzNVaW5ReXRyVUI2M29yY0s4eEszbFlEYUpnclVxQTlaN2ZKVExjWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1759452534),
+('Z5yIf34QLtFKIaXcYcfsMgXmEwqTQEKGR1iOeE2n', 12, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiSmtjWjBPU2ZqbTd5RWx0S1JKTnVwMmo1RFZOR2NzM2o5RURQZVI5WCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wb3MvYmFyYW5nIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTI7czo3OiJzaWRlYmFyIjtzOjc6InBheW1lbnQiO30=', 1759454963);
 
 -- --------------------------------------------------------
 
@@ -481,7 +528,8 @@ CREATE TABLE `users` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `role` enum('superadmin','admin','guru') NOT NULL,
+  `role` enum('superadmin','admin','guru','pemilik_kantin') NOT NULL,
+  `kantin_id` int(11) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -491,10 +539,12 @@ CREATE TABLE `users` (
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(9, 'Super', 'superadmin@gmail.com', '$2y$12$G27HK1OzEuQwFzTlSKSBQuyI4hLMbiOA1SJmYX2Pw5TeZbWCt7if2', 'superadmin', NULL, '2025-09-20 13:08:27', '2025-09-20 13:08:27'),
-(10, 'Admin', 'admin@gmail.com', '$2y$12$aZnHgkgrWKmtR1k8oPTyruM3/Km3PffDTKqU8uDfrwwG6Mtbssm42', 'admin', NULL, '2025-09-20 13:08:55', '2025-09-20 13:08:55'),
-(11, 'Guru', 'guru@gmail.com', '$2y$12$eDE/jkXaB5XyU1zW9r5rfuq2xdy18jBHlJVrs6Ybmlz3Uto/.n6RK', 'guru', NULL, '2025-09-20 13:09:27', '2025-09-20 13:11:54');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `kantin_id`, `remember_token`, `created_at`, `updated_at`) VALUES
+(9, 'Super Widiww', 'superadmin@gmail.com', '$2y$12$G27HK1OzEuQwFzTlSKSBQuyI4hLMbiOA1SJmYX2Pw5TeZbWCt7if2', 'superadmin', NULL, NULL, '2025-09-20 13:08:27', '2025-09-20 13:08:27'),
+(10, 'Admin', 'admin@gmail.com', '$2y$12$aZnHgkgrWKmtR1k8oPTyruM3/Km3PffDTKqU8uDfrwwG6Mtbssm42', 'admin', NULL, NULL, '2025-09-20 13:08:55', '2025-09-20 13:08:55'),
+(11, 'Guru', 'guru@gmail.com', '$2y$12$eDE/jkXaB5XyU1zW9r5rfuq2xdy18jBHlJVrs6Ybmlz3Uto/.n6RK', 'guru', NULL, NULL, '2025-09-20 13:09:27', '2025-09-20 13:11:54'),
+(12, 'kantinutama', 'kantinutama@gmail.com', '$2y$12$IHY/r/tD.oOtQsCWkNRbjOYhoUlnBGGho4BFXH22q3ETY0HXosu7e', 'pemilik_kantin', 7, NULL, '2025-10-02 22:45:44', '2025-10-02 22:45:44'),
+(13, 'kantinkedua', 'kantinkedua@gmail.com', '$2y$12$MYxwUkYb7zKIFSCKfLphkOVMjerSHVUqXr6ga.Q4bJwmKtZc2eEne', 'pemilik_kantin', 6, NULL, '2025-10-03 00:51:10', '2025-10-03 00:51:10');
 
 --
 -- Indexes for dumped tables
@@ -653,7 +703,8 @@ ALTER TABLE `transaksi_item`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `fk_users_kantin` (`kantin_id`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -663,13 +714,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `absensi`
 --
 ALTER TABLE `absensi`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `barang_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `barang_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -693,7 +744,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT untuk tabel `kantin`
 --
 ALTER TABLE `kantin`
-  MODIFY `kantin_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `kantin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `kelas`
@@ -717,7 +768,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT untuk tabel `reports`
 --
 ALTER TABLE `reports`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `rombel_siswa`
@@ -729,7 +780,7 @@ ALTER TABLE `rombel_siswa`
 -- AUTO_INCREMENT untuk tabel `saldo`
 --
 ALTER TABLE `saldo`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `siswa`
@@ -765,7 +816,7 @@ ALTER TABLE `transaksi_item`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -817,6 +868,12 @@ ALTER TABLE `transaksi`
 ALTER TABLE `transaksi_item`
   ADD CONSTRAINT `transaksi_item_ibfk_1` FOREIGN KEY (`transaksi_id`) REFERENCES `transaksi` (`transaksi_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `transaksi_item_ibfk_2` FOREIGN KEY (`barang_id`) REFERENCES `barang` (`barang_id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_users_kantin` FOREIGN KEY (`kantin_id`) REFERENCES `kantin` (`kantin_id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
