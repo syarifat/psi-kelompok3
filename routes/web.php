@@ -12,16 +12,12 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\KantinController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardPaymentController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
-use App\Http\Controllers\DashboardController;
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,13 +33,23 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kelas', KelasController::class);
     Route::resource('tahun_ajaran', TahunAjaranController::class);
     Route::resource('user', UserController::class);
+    Route::resource('kantin', KantinController::class);
     Route::post('/rombel_siswa/mass_store', [RombelSiswaController::class, 'mass_store'])->name('rombel_siswa.mass_store');
     Route::post('/rombel_siswa/ganti-kelas-massal', [RombelSiswaController::class, 'gantiKelasMassal'])->name('rombel_siswa.ganti_kelas_massal');
 });
 
 require __DIR__.'/auth.php';
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // Dashboard Absensi
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard.absensi');
+
+    // Dashboard Payment
+    Route::get('/dashboard/payment', [DashboardPaymentController::class, 'index'])
+        ->name('dashboard.payment');
+});
 Route::get('/whatsapp', [\App\Http\Controllers\WhatsappController::class, 'index'])->name('whatsapp.index')->middleware('auth');
 Route::post('/whatsapp/send', [\App\Http\Controllers\WhatsappController::class, 'send'])->name('whatsapp.send')->middleware('auth');
 Route::get('/absensi/export/{type}', [\App\Http\Controllers\AbsensiController::class, 'export'])->name('absensi.export');
@@ -77,18 +83,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pos/masterdata', function() {
         return view('pos.masterdata');
     })->name('pos.masterdata');
-//     Route::get('/pos/saldo', function() {
-//         return view('pos.saldo');
-//     })->name('saldo.index');
-//     Route::get('/pos/kantin', function() {
-//         return view('pos.kantin');
-//     })->name('kantin.index');
-//     Route::get('/pos/barang', function() {
-//         return view('pos.barang');
-//     })->name('barang.index');
 });
 
 // Kantin Cashless
 Route::get('/pos/saldo', [SaldoController::class, 'index'])->name('saldo.index');
 Route::get('/pos/kantin', [KantinController::class, 'index'])->name('kantin.index');
 Route::get('/pos/barang', [BarangController::class, 'index'])->name('barang.index');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('barang', BarangController::class);
+});

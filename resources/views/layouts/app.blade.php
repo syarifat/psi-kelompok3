@@ -15,7 +15,11 @@
     </style>
 </head>
 <body>
-    @include('layouts.navigation') {{-- jika ada --}}
+    @if(session('sidebar') === 'payment')
+        @include('layouts.navigation_payment')
+    @else
+        @include('layouts.navigation_absensi')
+    @endif
     @yield('scripts')
 </body>
 </html>

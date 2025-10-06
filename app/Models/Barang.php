@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,8 +8,13 @@ class Barang extends Model
 {
     protected $table = 'barang';
     protected $primaryKey = 'barang_id';
-    protected $fillable = ['kantin_id', 'nama_barang', 'harga_barang'];
-    public $timestamps = false;
+    public $timestamps = true;
+
+    protected $fillable = [
+        'kantin_id',
+        'nama_barang',
+        'harga_barang',
+    ];
 
     public function kantin()
     {

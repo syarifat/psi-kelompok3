@@ -25,11 +25,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $mode = $request->input('app_mode', 'absensi'); 
+        session(['sidebar' => $mode]);
+
+        if ($mode === 'payment') {
+            return redirect()->route('dashboard.payment');
+        }
+
+        return redirect()->route('dashboard.absensi');
     }
+
+
+
 
     /**
      * Destroy an authenticated session.

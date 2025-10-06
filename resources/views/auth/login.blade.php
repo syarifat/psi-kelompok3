@@ -48,6 +48,15 @@
                         </a>
                     @endif
                 </div>
+                <div class="mb-4">
+                    <label for="app_mode" class="block text-sm font-medium text-gray-700">Pilih Aplikasi</label>
+                    <select id="app_mode" name="app_mode"
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500">
+                        <option value="absensi">Absensi</option>
+                        <option value="payment">Payment</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="w-full py-2 rounded-md bg-cyan-600 text-white font-bold shadow hover:bg-cyan-700 transition">Sign In</button>
             </form>
             <!-- Info Sekolah -->

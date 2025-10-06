@@ -17,12 +17,19 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+  protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+    'kantin_id',   // tambahkan ini
+];
+public function kantin()
+{
+    return $this->belongsTo(Kantin::class, 'kantin_id', 'kantin_id');
+}
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,3 +54,4 @@ class User extends Authenticatable
         ];
     }
 }
+

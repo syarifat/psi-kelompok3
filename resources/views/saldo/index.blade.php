@@ -13,7 +13,7 @@
             @foreach($saldos as $saldo)
             <tr>
                 <td class="px-4 py-2 border">{{ $saldo->siswa->nama ?? '-' }}</td>
-                <td class="px-4 py-2 border">{{ number_format($saldo->saldo, 2) }}</td>
+                <td class="px-4 py-2 border">Rp. {{ number_format($saldo->saldo, 0, '', '.') }}</td>
             </tr>
             @endforeach
         </tbody>

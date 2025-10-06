@@ -42,7 +42,7 @@ class DashboardController extends Controller
         $jumlahTanpaKeterangan = $dataTanpaKeterangan->count();
         $jumlahBelumHadir = $dataBelumHadir->count();
 
-        return view('dashboard', compact(
+        return view('dashboard.absensi', compact(
             'dataSiswaAktif',
             'jumlahSiswa',
             'dataHadir',
