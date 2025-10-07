@@ -1,46 +1,32 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Up Saldo Siswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 900px; }
-        .card { border: none; border-radius: 0.75rem; }
-        .table-responsive { max-height: 350px; }
-    </style>
-</head>
-<body>
-<div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0">✨ Form Top Up Saldo Siswa</h4>
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto max-w-3xl p-4">
+    <div class="bg-white rounded shadow">
+        <div class="border-b px-6 py-4 bg-orange-500 rounded-t">
+            <h4 class="text-lg font-bold text-white text-center">✨ Form Top Up Saldo Siswa</h4>
         </div>
-        <div class="card-body p-4">
+        <div class="px-6 py-6">
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                     <strong>Berhasil!</strong> {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                     <strong>Gagal!</strong> {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <a href="{{ route('dashboard.payment') }}" class="btn btn-secondary mb-3">
+            <a href="{{ route('dashboard.payment') }}" class="inline-block mb-4 bg-orange-100 hover:bg-orange-200 text-orange-700 px-4 py-2 rounded transition">
                 &larr; Kembali ke Dashboard Payment
             </a>
 
-            <form action="{{ route('pos.topup.store') }}" method="POST">
+            <form action="{{ route('pos.topup.store') }}" method="POST" class="mb-6">
                 @csrf
-                <div class="mb-3">
-                    <label for="siswa_id" class="form-label fw-bold">Pilih Siswa</label>
-                    <select name="siswa_id" id="siswa_id" class="form-select" required>
+                <div class="mb-4">
+                    <label for="siswa_id" class="block font-semibold mb-1 text-gray-700">Pilih Siswa</label>
+                    <select name="siswa_id" id="siswa_id" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400" required>
                         <option value="">-- Pilih Siswa --</option>
                         @foreach(\App\Models\Siswa::orderBy('nama')->get() as $siswa)
                             <option value="{{ $siswa->id }}">
@@ -49,32 +35,32 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label for="nominal" class="form-label fw-bold">Nominal Top Up</label>
-                    <input type="number" name="nominal" id="nominal" class="form-control" min="1000" required placeholder="Masukkan nominal top up">
+                <div class="mb-4">
+                    <label for="nominal" class="block font-semibold mb-1 text-gray-700">Nominal Top Up</label>
+                    <input type="number" name="nominal" id="nominal" min="1000" required placeholder="Masukkan nominal top up"
+                        class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">
                 </div>
-                <button type="submit" class="btn btn-success">Top Up</button>
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded transition">Top Up</button>
             </form>
 
-            <!-- Tabel Histori Top Up Semua Siswa -->
-            <h5 class="fw-bold mb-2 mt-4">Histori Top Up Seluruh Siswa</h5>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered align-middle">
-                    <thead class="table-light">
+            <h5 class="font-bold mb-2 mt-6 text-gray-700">Histori Top Up Seluruh Siswa</h5>
+            <div class="overflow-x-auto rounded">
+                <table class="min-w-full bg-white border border-gray-200 text-sm">
+                    <thead class="bg-orange-100">
                         <tr>
-                            <th>Nama</th>
-                            <th>Kelas</th>
-                            <th>Nominal</th>
-                            <th>Tanggal</th>
+                            <th class="px-4 py-2 border-b text-left text-orange-700">Nama</th>
+                            <th class="px-4 py-2 border-b text-left text-orange-700">Kelas</th>
+                            <th class="px-4 py-2 border-b text-left text-orange-700">Nominal</th>
+                            <th class="px-4 py-2 border-b text-left text-orange-700">Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($historiAll as $topup)
-                            <tr>
-                                <td>{{ $topup->siswa->nama ?? '-' }}</td>
-                                <td>{{ $topup->siswa->kelas->nama ?? '-' }}</td>
-                                <td>Rp{{ number_format($topup->nominal,0,',','.') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($topup->waktu ?? $topup->created_at)->format('d-m-Y H:i') }}</td>
+                            <tr class="hover:bg-orange-50">
+                                <td class="px-4 py-2 border-b">{{ $topup->siswa->nama ?? '-' }}</td>
+                                <td class="px-4 py-2 border-b">{{ $topup->siswa->kelas->nama ?? '-' }}</td>
+                                <td class="px-4 py-2 border-b">Rp{{ number_format($topup->nominal,0,',','.') }}</td>
+                                <td class="px-4 py-2 border-b">{{ \Carbon\Carbon::parse($topup->waktu ?? $topup->created_at)->format('d-m-Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -82,11 +68,10 @@
             </div>
         </div>
     </div>
-    <div class="text-center mt-3 text-muted">
-        <small>Sistem Pembayaran Sekolah &copy; {{ date('Y') }}</small>
-    </div>
 </div>
+@endsection
 
+@push('scripts')
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -142,5 +127,4 @@ function showHistori(siswa_id, nama) {
     });
 }
 </script>
-</body>
-</html>
+@endpush

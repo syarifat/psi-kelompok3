@@ -1,163 +1,86 @@
-<!-- filepath: d:\KULIAH\proyek sistem informasi\psi-kelompok3\resources\views\siswa\topup_histori.blade.php -->
 @extends('layouts.app')
+
 @section('content')
-<div class="container mt-4 mb-5">
-    <div class="card shadow-sm border overflow-hidden" style="border-radius: 12px;">
-        <!-- Header minimalis -->
-        <div class="card-header bg-white border-bottom position-relative" style="padding: 1.5rem;">
-            <div class="d-flex align-items-center">
-                <div class="icon-wrapper me-3" style="width: 45px; height: 45px; background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-history text-dark" style="font-size: 1.3rem;"></i>
+<div class="container mx-auto max-w-2xl py-8">
+    <!-- Header -->
+    <div class="bg-orange-500 px-6 py-5 rounded-t-lg flex justify-center items-center">
+        <svg class="h-7 w-7 text-white mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/>
+        </svg>
+        <span class="text-2xl font-bold text-white leading-tight text-center">Histori Top Up</span>
+    </div>
+    <!-- Info Siswa -->
+    <div class="px-6 py-4 bg-orange-50 border-b">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white border border-orange-200 rounded-lg h-10 w-10 flex items-center justify-center">
+                    <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
                 </div>
                 <div>
-                    <h4 class="mb-1 fw-bold text-dark">Histori Topup</h4>
-                    <p class="mb-0 text-muted small">Riwayat pengisian saldo</p>
+                    <div class="text-xs text-gray-500">Nama Siswa</div>
+                    <div class="font-semibold text-gray-700">{{ $siswa->nama }}</div>
                 </div>
             </div>
-        </div>
-
-        <div class="card-body p-4 bg-white">
-            <!-- Info Siswa dengan design card putih -->
-            <div class="info-card mb-4 p-3 border" style="border-radius: 10px; background: #fafafa;">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="icon-box me-3" style="width: 38px; height: 38px; background: #e9ecef; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-user text-dark"></i>
-                            </div>
-                            <div>
-                                <small class="text-muted d-block mb-1">Nama Siswa</small>
-                                <span class="fw-bold text-dark">{{ $siswa->nama }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center">
-                            <div class="icon-box me-3" style="width: 38px; height: 38px; background: #e9ecef; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-id-card text-dark"></i>
-                            </div>
-                            <div>
-                                <small class="text-muted d-block mb-1">Nomor Induk</small>
-                                <span class="fw-bold text-dark">{{ $siswa->nis }}</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-white border border-orange-200 rounded-lg h-10 w-10 flex items-center justify-center">
+                    <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 2c-2.21 0-4 1.79-4 4v1h8v-1c0-2.21-1.79-4-4-4z"/>
+                    </svg>
                 </div>
-            </div>
-
-            <!-- Table dengan styling minimalis -->
-            <div class="table-responsive">
-                <table class="table table-hover align-middle" style="border-collapse: separate; border-spacing: 0;">
-                    <thead>
-                        <tr style="background: #f8f9fa;">
-                            <th class="text-dark text-center py-3 border-bottom border-top" style="border-top-left-radius: 8px;">
-                                <i class="fas fa-money-bill-wave me-2"></i>Nominal
-                            </th>
-                            <th class="text-dark text-center py-3 border-bottom border-top" style="border-top-right-radius: 8px;">
-                                <i class="fas fa-calendar-alt me-2"></i>Tanggal & Waktu
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($topups as $index => $topup)
-                        <tr class="topup-row" style="transition: all 0.2s ease;">
-                            <td class="text-center border-bottom py-3" style="background: #ffffff;">
-                                <div class="nominal-badge d-inline-flex align-items-center px-4 py-2" style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 8px;">
-                                    <i class="fas fa-coins text-dark me-2"></i>
-                                    <span class="text-dark fw-bold fs-5">Rp{{ number_format($topup->nominal, 0, ',', '.') }}</span>
-                                </div>
-                            </td>
-                            <td class="text-center border-bottom py-3" style="background: #ffffff;">
-                                <div class="date-badge d-inline-flex align-items-center px-3 py-2" style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 8px;">
-                                    <i class="fas fa-clock text-dark me-2"></i>
-                                    <span class="text-dark fw-semibold">{{ \Carbon\Carbon::parse($topup->waktu ?? $topup->created_at)->format('d M Y, H:i') }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="2" class="text-center py-5 border-0">
-                                <div class="empty-state">
-                                    <i class="fas fa-inbox text-muted mb-3" style="font-size: 4rem; opacity: 0.2;"></i>
-                                    <p class="text-muted mb-0 fs-5">Belum ada histori topup</p>
-                                    <small class="text-muted">Riwayat topup akan muncul di sini</small>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Button kembali dengan styling minimalis -->
-            <div class="mt-4">
-                <a href="{{ url()->previous() }}" class="btn btn-lg px-4 py-2 border-dark" style="background: #ffffff; color: #212529; border: 2px solid #212529; border-radius: 8px; transition: all 0.3s ease;">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali
-                </a>
+                <div>
+                    <div class="text-xs text-gray-500">Nomor Induk</div>
+                    <div class="font-semibold text-gray-700">{{ $siswa->nis }}</div>
+                </div>
             </div>
         </div>
     </div>
+    <!-- Table -->
+    <div class="px-6 py-6">
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-orange-100 rounded-lg">
+                <thead>
+                    <tr class="bg-orange-100">
+                        <th class="px-4 py-3 text-orange-700 text-sm font-semibold text-center rounded-tl-lg">Nominal</th>
+                        <th class="px-4 py-3 text-orange-700 text-sm font-semibold text-center rounded-tr-lg">Tanggal & Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($topups as $topup)
+                    <tr class="hover:bg-orange-50 transition">
+                        <td class="text-center px-4 py-3 font-bold text-orange-700">
+                            Rp{{ number_format($topup->nominal, 0, ',', '.') }}
+                        </td>
+                        <td class="text-center px-4 py-3 text-gray-700">
+                            {{ \Carbon\Carbon::parse($topup->waktu ?? $topup->created_at)->format('d M Y, H:i') }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="2" class="text-center py-8 text-gray-400">
+                            <div class="flex flex-col items-center gap-2">
+                                <svg class="h-12 w-12 text-orange-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4"/>
+                                </svg>
+                                <div class="font-semibold">Belum ada histori topup</div>
+                                <div class="text-xs">Riwayat topup akan muncul di sini</div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <a href="{{ url()->previous() }}" class="inline-flex items-center gap-2 bg-white border border-orange-400 text-orange-600 px-5 py-2 rounded-lg font-semibold hover:bg-orange-50 transition">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Kembali
+            </a>
+        </div>
+    </div>
 </div>
-
-<style>
-    .topup-row:hover {
-        background: #f8f9fa !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .topup-row:hover td {
-        background: #f8f9fa !important;
-    }
-
-    .btn:hover {
-        background: #212529 !important;
-        color: #ffffff !important;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .nominal-badge, .date-badge {
-        transition: all 0.3s ease;
-    }
-
-    .topup-row:hover .nominal-badge,
-    .topup-row:hover .date-badge {
-        border-color: #6c757d;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .card {
-        animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
-
-<!-- Tambahkan Font Awesome jika belum ada -->
-@if(!isset($fontAwesomeLoaded))
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-@endif
-@endsection
-
-@section('scripts')
-<script>
-    $(document).ready(function() {
-        var siswa_id = "{{ $siswa->id }}";
-        
-        // Fetch histori topup saat halaman dimuat
-        $.get("/siswa/" + siswa_id + "/topup-histori", function(data) {
-            // ...
-        });
-    });
-</script>
 @endsection
