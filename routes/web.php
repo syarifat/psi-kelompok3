@@ -14,6 +14,7 @@ use App\Http\Controllers\KantinController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPaymentController;
+use App\Http\Controllers\TopupController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,8 +48,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('dashboard.absensi');
 
     // Dashboard Payment
-    Route::get('/dashboard/payment', [DashboardPaymentController::class, 'index'])
-        ->name('dashboard.payment');
+    Route::get('/dashboard-payment', [DashboardPaymentController::class, 'index'])->name('dashboard.payment');
 });
 Route::get('/whatsapp', [\App\Http\Controllers\WhatsappController::class, 'index'])->name('whatsapp.index')->middleware('auth');
 Route::post('/whatsapp/send', [\App\Http\Controllers\WhatsappController::class, 'send'])->name('whatsapp.send')->middleware('auth');
@@ -71,9 +71,6 @@ Route::get('/rombel_siswa/export/pdf', [App\Http\Controllers\RombelSiswaControll
 
 // Dummy routes for POS system (to be replaced with actual controllers and views)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/pos/topup', function() {
-        return view('pos.topup');
-    })->name('pos.topup');
     Route::get('/pos/transaksi', function() {
         return view('pos.transaksi');
     })->name('pos.transaksi');
@@ -92,4 +89,9 @@ Route::get('/pos/barang', [BarangController::class, 'index'])->name('barang.inde
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('barang', BarangController::class);
+    Route::get('/pos/topup', [TopupController::class, 'create'])->name('pos.topup');
+    Route::post('/pos/topup', [TopupController::class, 'store'])->name('pos.topup.store');
 });
+
+Route::get('/siswa/search-live', [SiswaController::class, 'searchLive'])->name('siswa.search.live');
+Route::get('/siswa/{siswa_id}/topup-histori', [SiswaController::class, 'topupHistoriView'])->name('siswa.topup.histori');

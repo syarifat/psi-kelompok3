@@ -13,12 +13,14 @@ class RombelSiswa extends Model
         'tahun_ajaran_id',
     ];
 
-    public function siswa() {
-        return $this->belongsTo(Siswa::class);
+    public function siswa()
+    {
+        return $this->belongsTo(\App\Models\Siswa::class, 'siswa_id');
     }
+
     public function kelas()
     {
-        return $this->belongsTo(\App\Models\Kelas::class);
+        return $this->belongsTo(\App\Models\Kelas::class, 'kelas_id');
     }
     public function tahunAjaran() {
         return $this->belongsTo(TahunAjaran::class);
