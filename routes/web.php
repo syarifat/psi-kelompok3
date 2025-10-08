@@ -15,6 +15,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPaymentController;
 use App\Http\Controllers\TopupController;
+use Illuminate\Http\Request;
+use App\Models\Siswa;
 
 Route::get('/', function () {
     return view('welcome');

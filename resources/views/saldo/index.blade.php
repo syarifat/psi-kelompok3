@@ -7,7 +7,7 @@
             <tr>
                 <th class="px-4 py-2 border">Nama Siswa</th>
                 <th class="px-4 py-2 border">Saldo</th>
-                <th class="px-4 py-2 border">Histori Topup</th>
+                <th class="px-4 py-2 border text-center">Histori Topup</th>
             </tr>
         </thead>
         <tbody>
@@ -15,8 +15,9 @@
             <tr>
                 <td class="px-4 py-2 border">{{ $saldo->siswa->nama ?? '-' }}</td>
                 <td class="px-4 py-2 border">Rp. {{ number_format($saldo->saldo, 0, '', '.') }}</td>
-                <td class="px-4 py-2 border">
-                    <a href="{{ route('siswa.topup.histori', ['siswa_id' => $saldo->siswa->id]) }}" class="btn btn-info btn-sm">
+                <td class="px-4 py-2 border text-center">
+                    <a href="{{ route('siswa.topup.histori', ['siswa_id' => $saldo->siswa->id]) }}"
+                       class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded transition duration-150 shadow">
                         Lihat Histori
                     </a>
                 </td>
