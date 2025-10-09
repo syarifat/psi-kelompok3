@@ -22,6 +22,37 @@
         <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded transition">Top Up</button>
     </form>
 </div>
+
+<!-- Tambahan: Tabel Histori -->
+<div class="max-w-3xl mx-auto mt-12">
+    <h2 class="text-xl font-bold mb-4">Histori Top Up Seluruh Siswa</h2>
+    <table class="min-w-full bg-white border rounded shadow">
+        <thead>
+            <tr class="bg-orange-100">
+                <th class="px-4 py-2 border text-center">ID</th>
+                <th class="px-4 py-2 border text-center">Nama Siswa</th>
+                <th class="px-4 py-2 border text-center">Nominal</th>
+                <th class="px-4 py-2 border text-center">Waktu</th>
+                <th class="px-4 py-2 border text-center">Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($historiAll as $row)
+            <tr>
+                <td class="px-4 py-2 border text-center">{{ $row->topup_id ?? $row->id }}</td>
+                <td class="px-4 py-2 border text-center">{{ $row->siswa->nama ?? '-' }}</td>
+                <td class="px-4 py-2 border text-center">Rp. {{ number_format($row->nominal, 0, '', '.') }}</td>
+                <td class="px-4 py-2 border text-center">{{ $row->waktu }}</td>
+                <td class="px-4 py-2 border text-center">{{ $row->created_at }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td class="px-4 py-2 border text-center" colspan="5">Belum ada data</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 @endsection
 
 @section('scripts')

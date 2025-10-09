@@ -97,3 +97,4 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/siswa/search-live', [SiswaController::class, 'searchLive'])->name('siswa.search.live');
 Route::get('/siswa/{siswa_id}/topup-histori', [SiswaController::class, 'topupHistoriView'])->name('siswa.topup.histori');
+Route::get('/topup/{siswa_id}', [TopupController::class, 'show'])->name('pos.topup.show');

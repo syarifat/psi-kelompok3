@@ -61,4 +61,16 @@ class TopupController extends Controller
             return redirect()->route('pos.topup')->with('error', 'Gagal melakukan top up: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Menampilkan riwayat top up untuk siswa tertentu.
+     */
+    public function show($siswa_id)
+    {
+        $siswa = \App\Models\Siswa::find($siswa_id);
+        $histori = \App\Models\Topup::where('siswa_id', $siswa_id)
+            ->orderByDesc('created_at')
+            ->get();
+        return view('topup.topup', compact('siswa', 'histori'));
+    }
 }

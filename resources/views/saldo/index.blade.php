@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th class="px-4 py-2 border">Nama Siswa</th>
+                <th class="px-4 py-2 border">Kelas</th>
                 <th class="px-4 py-2 border">Saldo</th>
                 <th class="px-4 py-2 border text-center">Histori Topup</th>
             </tr>
@@ -14,6 +15,7 @@
             @foreach($saldos as $saldo)
             <tr>
                 <td class="px-4 py-2 border">{{ $saldo->siswa->nama ?? '-' }}</td>
+                <td class="px-4 py-2 border">{{ $saldo->siswa->kelas->nama ?? '-' }}</td>
                 <td class="px-4 py-2 border">Rp. {{ number_format($saldo->saldo, 0, '', '.') }}</td>
                 <td class="px-4 py-2 border text-center">
                     <a href="{{ route('siswa.topup.histori', ['siswa_id' => $saldo->siswa->id]) }}"
