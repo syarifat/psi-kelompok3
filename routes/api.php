@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ApiSiswaController;
 use App\Http\Controllers\Api\RombelSiswaApiController;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Siswa;
+use App\Models\Saldo;
 
 Route::post('/absensi-api', [ApiAbsensiController::class, 'store']);
 Route::get('/siswa-api', [ApiSiswaController::class, 'index']);
@@ -67,5 +68,30 @@ Route::get('/topup/current', function() {
 });
 Route::post('/topup/reset', function() {
     Cache::forget('topup_siswa_id');
+    return response()->json(['status' => 'reset']);
+});
+
+Route::post('/rfid-scan-transaksi', function(Request $request) {
+    $uid = $request->uid;
+    $siswa = Siswa::where('rfid', $uid)->first();
+    if ($siswa) {
+        Cache::put('transaksi_siswa_id', $siswa->id, now()->addMinutes(2));
+        return response()->json(['status' => 'ok', 'siswa' => $siswa]);
+    }
+    return response()->json(['status' => 'not_found']);
+});
+
+Route::get('/transaksi/current', function() {
+    $id = Cache::get('transaksi_siswa_id');
+    $siswa = $id ? Siswa::find($id) : null;
+    $saldo = $siswa ? Saldo::where('siswa_id', $siswa->id)->value('saldo') : 0;
+    if ($siswa) {
+        $siswa->saldo = $saldo; // tambahkan saldo ke objek siswa
+    }
+    return response()->json(['siswa' => $siswa]);
+});
+
+Route::post('/transaksi/reset', function() {
+    Cache::forget('transaksi_siswa_id');
     return response()->json(['status' => 'reset']);
 });

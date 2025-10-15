@@ -15,6 +15,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPaymentController;
 use App\Http\Controllers\TopupController;
+use App\Http\Controllers\PosTransaksiController;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 
@@ -98,3 +99,11 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/siswa/search-live', [SiswaController::class, 'searchLive'])->name('siswa.search.live');
 Route::get('/siswa/{siswa_id}/topup-histori', [SiswaController::class, 'topupHistoriView'])->name('siswa.topup.histori');
 Route::get('/topup/{siswa_id}', [TopupController::class, 'show'])->name('pos.topup.show');
+
+// Route POS Transaksi
+
+Route::get('/pos/transaksi', [PosTransaksiController::class, 'index'])->name('pos.transaksi');
+Route::post('/pos/transaksi/tambah-barang', [PosTransaksiController::class, 'tambahBarang'])->name('pos.transaksi.tambah_barang');
+Route::delete('/pos/transaksi/hapus-barang/{barang_id}', [PosTransaksiController::class, 'hapusBarang'])->name('pos.transaksi.hapus_barang');
+Route::post('/pos/transaksi/scan-rfid', [PosTransaksiController::class, 'scanRfid'])->name('pos.transaksi.scan_rfid');
+Route::post('/pos/transaksi/bayar', [PosTransaksiController::class, 'bayar'])->name('pos.transaksi.bayar');
