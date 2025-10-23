@@ -18,6 +18,7 @@ use App\Http\Controllers\TopupController;
 use App\Http\Controllers\PosTransaksiController;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Http\Controllers\LaporanTransaksiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -107,3 +108,9 @@ Route::post('/pos/transaksi/tambah-barang', [PosTransaksiController::class, 'tam
 Route::delete('/pos/transaksi/hapus-barang/{barang_id}', [PosTransaksiController::class, 'hapusBarang'])->name('pos.transaksi.hapus_barang');
 Route::post('/pos/transaksi/scan-rfid', [PosTransaksiController::class, 'scanRfid'])->name('pos.transaksi.scan_rfid');
 Route::post('/pos/transaksi/bayar', [PosTransaksiController::class, 'bayar'])->name('pos.transaksi.bayar');
+
+// POS Routes
+Route::prefix('pos')->middleware(['auth'])->group(function () {
+    // Laporan Transaksi Route
+    Route::get('/laporan', [LaporanTransaksiController::class, 'index'])->name('pos.laporan');
+});
