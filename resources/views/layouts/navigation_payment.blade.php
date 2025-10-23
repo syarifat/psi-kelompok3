@@ -22,9 +22,12 @@
                     </svg>
                 </button>
                 <div x-show="open" x-transition class="pl-8 flex flex-col gap-1">
+                    <a href="{{ route('siswa.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Siswa</a>
+                    <a href="{{ route('rombel_siswa.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-orange-500 px-3 py-2 rounded transition">Rombel Siswa</a>
                     <a href="{{ route('saldo.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Saldo Siswa</a>
                     <a href="{{ route('kantin.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Kantin</a>
                     <a href="{{ route('barang.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Barang</a>
+                    <a href="{{ route('user.index') }}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">User</a>
                 </div>
             </div>
             <a href="{{ route('dashboard.payment') }}" class="flex items-center gap-2 text-gray-700 hover:text-orange-500 px-3 py-2 rounded transition group">Dashboard</a>

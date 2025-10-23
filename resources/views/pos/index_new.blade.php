@@ -24,7 +24,7 @@
                 <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <input type="text" id="search-menu" placeholder="Cari menu makanan..." class="w-full pl-14 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm">
+                <input type="text" id="search-menu" placeholder="Cari menu makanan..." class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm">
             </div>
         </div>
 
@@ -32,28 +32,33 @@
         <div class="flex-1 overflow-y-auto pr-2">
             <div id="menu-container" class="flex flex-wrap gap-4">
                 @forelse($barangList as $barang)
-                <button type="button" class="menu-item bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100 flex flex-col text-left w-[calc((100%-4rem)/5)]" onclick="quickAdd({{ $barang->barang_id }})">
-                    <div class="relative aspect-square bg-orange-500 flex items-center justify-center">
-                        <svg class="w-16 h-16 text-white opacity-20 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
-                        </svg>
-                    </div>
-                    <div class="p-3 flex flex-col flex-grow">
-                        <h3 class="font-semibold text-gray-700 text-sm mb-2 truncate">{{ $barang->nama_barang }}</h3>
-                        <div class="flex items-center justify-between mt-auto">
-                            <span class="text-gray-800 font-bold text-sm">Rp {{ number_format($barang->harga_barang,0,',','.') }}</span>
-                            <div onclick="event.stopPropagation(); openQtyModal({{ $barang->barang_id }}, '{{ $barang->nama_barang }}', {{ $barang->harga_barang }})" class="bg-orange-500 hover:bg-orange-600 text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/> </svg>
+                <div class="menu-item flex flex-col w-[calc((100%-4rem)/5)]">
+                    {{-- [DISEMPURNAKAN] Kartu dibuat sebagai tombol untuk aksesibilitas yang lebih baik --}}
+                    <button type="button" class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100 flex-grow flex flex-col text-left" onclick="quickAdd({{ $barang->barang_id }})">
+                        <div class="relative aspect-square bg-orange-500 flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white opacity-20 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                            </svg>
+                        </div>
+                        <div class="p-3 flex flex-col flex-grow">
+                            <h3 class="font-semibold text-gray-700 text-sm mb-2 truncate">{{ $barang->nama_barang }}</h3>
+                            <div class="flex items-center justify-between mt-auto">
+                                <span class="text-gray-800 font-bold text-sm">Rp {{ number_format($barang->harga_barang,0,',','.') }}</span>
+                                <div onclick="event.stopPropagation(); openQtyModal({{ $barang->barang_id }}, '{{ $barang->nama_barang }}', {{ $barang->harga_barang }})" class="bg-orange-500 hover:bg-orange-600 text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/> </svg>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </button>
+                    </button>
+                </div>
                 @empty
+                {{-- [DISEMPURNAKAN] Pesan jika tidak ada menu sama sekali di database --}}
                 <div class="w-full text-center py-10">
                     <p class="text-gray-500">Belum ada menu yang tersedia.</p>
                 </div>
                 @endforelse
                 
+                {{-- [DISEMPURNAKAN] Pesan jika pencarian tidak menemukan hasil --}}
                 <div id="no-results" class="hidden w-full text-center py-10">
                     <p class="text-gray-500 font-semibold">Menu tidak ditemukan</p>
                     <p class="text-sm text-gray-400">Coba gunakan kata kunci lain.</p>
@@ -87,7 +92,9 @@
                             <form method="POST" action="{{ route('pos.transaksi.hapus_barang', $item['barang_id']) }}" class="ml-2">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="text-gray-400 hover:text-red-600 transition-colors" aria-label="Hapus item {{ $item['nama'] }}">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
                                 </button>
                             </form>
                         </div>
@@ -119,9 +126,9 @@
                 </div>
             </div>
 
-            <button id="scan-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed" {{ $total == 0 ? 'disabled' : '' }}>
+            <button id="scan-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-md" {{ $total == 0 ? 'disabled' : '' }}>
                 <div class="flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" /></svg>
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" /> </svg>
                     <span>Mulai Scan & Bayar</span>
                 </div>
             </button>
@@ -146,6 +153,7 @@
         
         <div class="flex items-center justify-center space-x-4 mb-6">
             <button type="button" onclick="updateModalQty(-1)" class="bg-gray-200 hover:bg-gray-300 text-gray-700 w-12 h-12 rounded-full text-2xl font-bold transition-colors">-</button>
+            {{-- [DISEMPURNAKAN] Input hanya menerima angka dan event listener untuk tombol Enter --}}
             <input type="number" id="modal-qty" value="1" min="1" class="w-20 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none appearance-none [-moz-appearance:textfield]">
             <button type="button" onclick="updateModalQty(1)" class="bg-gray-200 hover:bg-gray-300 text-gray-700 w-12 h-12 rounded-full text-2xl font-bold transition-colors">+</button>
         </div>
@@ -156,7 +164,7 @@
             <input type="hidden" name="qty" id="modal-qty-submit" value="1">
             <div class="flex space-x-2">
                 <button type="button" onclick="closeQtyModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 rounded-lg transition-colors">Batal</button>
-                <button type="submit" onclick="submitModalForm()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors">Tambah</button>
+                <button type="submit" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition-colors">Tambah</button>
             </div>
         </form>
     </div>
@@ -168,134 +176,144 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let polling = null;
-    const totalBayar = {{ $total }}; 
+    const totalBayar = {{ $total }};
+    const barangData = @json($barangList->keyBy('barang_id'));
     
     const scanBtn = document.getElementById('scan-btn');
     const siswaInfo = document.getElementById('siswa-info');
     const bayarForm = document.getElementById('bayar-form');
+    
+    const qtyModal = document.getElementById('qty-modal');
+    const modalItemName = document.getElementById('modal-item-name');
+    const modalItemPrice = document.getElementById('modal-item-price');
+    const modalBarangId = document.getElementById('modal-barang-id');
+    const modalQtyInput = document.getElementById('modal-qty');
+    const modalQtySubmit = document.getElementById('modal-qty-submit');
     const modalForm = document.getElementById('modal-form');
 
-    // ... (sisa deklarasi variabel tidak berubah)
+    const searchInput = document.getElementById('search-menu');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const noResults = document.getElementById('no-results');
 
-    // --- FUNGSI-FUNGSI UTAMA ---
+    // Fungsi untuk membuka modal kuantitas
+    window.openQtyModal = function(barangId, namaBarang, harga) {
+        modalItemName.textContent = namaBarang;
+        modalItemPrice.textContent = 'Rp ' + harga.toLocaleString('id-ID');
+        modalBarangId.value = barangId;
+        modalQtyInput.value = 1;
+        modalQtySubmit.value = 1;
+        qtyModal.classList.remove('hidden');
+        modalQtyInput.focus(); // Langsung fokus ke input
+    }
 
-    // [FUNGSI DIPERBAIKI] Event listener untuk tombol "Mulai Scan & Bayar"
-    scanBtn.addEventListener('click', function() {
-        // Hentikan polling sebelumnya jika ada yang masih berjalan
-        if (polling) {
-            clearInterval(polling);
+    // Fungsi untuk menutup modal
+    window.closeQtyModal = function() {
+        qtyModal.classList.add('hidden');
+    }
+
+    // Fungsi untuk mengubah kuantitas di modal
+    window.updateModalQty = function(delta) {
+        let value = parseInt(modalQtyInput.value) + delta;
+        if (isNaN(value) || value < 1) value = 1;
+        modalQtyInput.value = value;
+        modalQtySubmit.value = value;
+    }
+    
+    // [DISEMPURNAKAN] Validasi input modal agar tidak bisa diisi nilai < 1
+    modalQtyInput.addEventListener('input', () => {
+        let value = parseInt(modalQtyInput.value);
+        if (isNaN(value) || value < 1) {
+            modalQtyInput.value = 1;
         }
-        
-        // Jangan lakukan apa-apa jika keranjang kosong
+        modalQtySubmit.value = modalQtyInput.value;
+    });
+
+    // [DISEMPURNAKAN] Submit modal dengan menekan tombol Enter
+    modalQtyInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            modalForm.submit();
+        }
+    });
+
+    // Fungsi Quick Add (klik pada kartu)
+    window.quickAdd = function(barangId) {
+        const barang = barangData[barangId];
+        if (barang) {
+            // Langsung tambahkan 1 item ke keranjang tanpa membuka modal
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route('pos.transaksi.tambah_barang') }}';
+            
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            const hiddenFields = `
+                <input type="hidden" name="_token" value="${csrfToken}">
+                <input type="hidden" name="barang_id" value="${barangId}">
+                <input type="hidden" name="qty" value="1">
+            `;
+            form.innerHTML = hiddenFields;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+    
+    // Event listener untuk tombol Scan
+    scanBtn.addEventListener('click', function() {
         if (totalBayar === 0) return;
         
-        // Tampilkan status menunggu
         siswaInfo.innerHTML = '<div class="flex items-center"><svg class="animate-spin h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Menunggu scan RFID siswa...</div>';
         siswaInfo.classList.remove('hidden');
         bayarForm.style.display = 'none';
 
-        // [PERBAIKAN UTAMA] Perintah RESET sudah DIHAPUS dari sini.
-        // Sekarang kita LANGSUNG mulai mencari data.
+        // [DISEMPURNAKAN] Menambahkan CSRF Token pada fetch request untuk keamanan
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        fetch('/api/transaksi/reset', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
         polling = setInterval(fetchSiswaTransaksi, 2000);
     });
 
-    // [FUNGSI DIPERBAIKI] Fungsi untuk mengambil data siswa
+    // Fungsi untuk mengambil data siswa via polling
     function fetchSiswaTransaksi() {
         fetch('/api/transaksi/current')
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                // Hanya proses jika API mengembalikan data siswa yang valid
-                if (data && data.siswa) {
-                    clearInterval(polling); // Hentikan polling jika siswa ditemukan
-
-                    // [KUNCI #1] Pastikan API Anda mengirim 'saldo' di dalam objek 'siswa'.
+                if (data.siswa) {
+                    clearInterval(polling);
                     let saldo = data.siswa.saldo ?? 0;
-                    
                     let html = `<div class="font-bold text-blue-700 mb-2">👤 ${data.siswa.nama ?? '-'} (${data.siswa.nis ?? '-'})</div>
                                 <div class="mb-2">💰 Saldo: <span class="font-bold text-green-700">Rp ${saldo.toLocaleString('id-ID')}</span></div>`;
                     
                     if (saldo >= totalBayar) {
                         html += `<div class="text-green-600 font-bold mb-2">✅ Saldo cukup</div>`;
                         siswaInfo.innerHTML = html;
-                        
                         setTimeout(function() {
                             siswaInfo.innerHTML += '<div class="text-green-700 font-bold mt-2">⏳ Pembayaran diproses...</div>';
                             bayarForm.submit();
-                        }, 1500);
-
+                        }, 1000);
                     } else {
                         html += `<div class="text-red-600 font-bold mb-2">❌ Saldo tidak cukup!</div>`;
                         siswaInfo.innerHTML = html;
-                        // Hentikan proses, biarkan kasir melihat status saldo tidak cukup.
                     }
                 }
-                // Jika data.siswa tidak ada, biarkan polling terus berjalan.
             })
             .catch(err => {
                 console.error("Polling error:", err);
                 clearInterval(polling);
-                siswaInfo.innerHTML = `<div class="text-red-600 font-bold">Terjadi kesalahan. Cek koneksi atau konsol log.</div>`;
             });
     }
 
-
-    // --- FUNGSI-FUNGSI PEMBANTU (Tidak ada perubahan signifikan) ---
-
-    window.quickAdd = function(barangId) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '{{ route('pos.transaksi.tambah_barang') }}';
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        form.innerHTML = `
-            <input type="hidden" name="_token" value="${csrfToken}">
-            <input type="hidden" name="barang_id" value="${barangId}">
-            <input type="hidden" name="qty" value="1">
-        `;
-        document.body.appendChild(form);
-        form.submit();
-    }
-
-    window.openQtyModal = function(barangId, namaBarang, harga) {
-        document.getElementById('modal-item-name').textContent = namaBarang;
-        document.getElementById('modal-item-price').textContent = 'Rp ' + harga.toLocaleString('id-ID');
-        document.getElementById('modal-barang-id').value = barangId;
-        document.getElementById('modal-qty').value = 1;
-        document.getElementById('qty-modal').classList.remove('hidden');
-        document.getElementById('modal-qty').focus();
-    }
-
-    window.closeQtyModal = function() {
-        document.getElementById('qty-modal').classList.add('hidden');
-    }
-
-    window.updateModalQty = function(delta) {
-        const input = document.getElementById('modal-qty');
-        let value = parseInt(input.value) + delta;
-        if (isNaN(value) || value < 1) value = 1;
-        input.value = value;
-    }
-
-    window.submitModalForm = function() {
-        document.getElementById('modal-qty-submit').value = document.getElementById('modal-qty').value;
-        modalForm.submit();
-    }
-    
-    document.getElementById('modal-qty').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            submitModalForm();
-        }
-    });
-
-    document.getElementById('search-menu').addEventListener('input', function(e) {
+    // [DISEMPURNAKAN] Fungsionalitas pencarian dengan pesan "tidak ditemukan"
+    searchInput.addEventListener('input', function(e) {
         const searchTerm = e.target.value.toLowerCase();
         let visibleCount = 0;
-        document.querySelectorAll('.menu-item').forEach(item => {
+        
+        menuItems.forEach(item => {
             const itemName = item.querySelector('h3').textContent.toLowerCase();
             if (itemName.includes(searchTerm)) {
                 item.style.display = 'flex';
@@ -304,10 +322,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.style.display = 'none';
             }
         });
-        document.getElementById('no-results').style.display = visibleCount === 0 ? 'block' : 'none';
+
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     });
 
-    document.getElementById('qty-modal').addEventListener('click', function(e) {
+    // Menutup modal saat klik di luar area modal
+    qtyModal.addEventListener('click', function(e) {
         if (e.target === this) closeQtyModal();
     });
 });

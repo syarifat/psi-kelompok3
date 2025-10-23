@@ -8,7 +8,8 @@ class Barang extends Model
 {
     protected $table = 'barang';
     protected $primaryKey = 'barang_id';
-    public $timestamps = true;
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'kantin_id',

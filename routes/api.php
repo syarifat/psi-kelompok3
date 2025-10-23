@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\RombelSiswaApiController;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Siswa;
 use App\Models\Saldo;
+use App\Models\Topup;
 
 Route::post('/absensi-api', [ApiAbsensiController::class, 'store']);
 Route::get('/siswa-api', [ApiSiswaController::class, 'index']);
@@ -54,33 +55,102 @@ Route::post('/rfid-scan', function(Request $request) {
     $uid = $request->uid;
     $siswa = Siswa::where('rfid', $uid)->first();
     if ($siswa) {
-        Cache::put('topup_siswa_id', $siswa->id, now()->addMinutes(2));
-        return response()->json(['status' => 'ok', 'siswa' => $siswa]);
+        // ambil saldo dari tabel saldo
+        $saldo = Saldo::where('siswa_id', $siswa->id)->value('saldo') ?? 0;
+
+        Cache::put('topup_siswa', [
+            'id' => $siswa->id,
+            'nama' => $siswa->nama,
+            'nis' => $siswa->nis,
+        ], now()->addMinutes(2));
+
+        return response()->json([
+            'status' => 'ok',
+            'siswa' => [
+                'id' => $siswa->id,
+                'nama' => $siswa->nama,
+                'nis' => $siswa->nis,
+                'saldo' => (float) $saldo,
+            ]
+        ]);
     }
     return response()->json(['status' => 'not_found']);
 });
 
 // Polling data siswa yang sedang di-topup
 Route::get('/topup/current', function() {
-    $id = Cache::get('topup_siswa_id');
-    $siswa = $id ? Siswa::find($id) : null;
-    return response()->json(['siswa' => $siswa]);
+    $siswa = Cache::get('topup_siswa');
+    if ($siswa) {
+        $siswaModel = \App\Models\Siswa::with('saldo')->find($siswa['id']);
+        return response()->json([
+            'siswa' => [
+                'id' => $siswaModel->id,
+                'nama' => $siswaModel->nama,
+                'nis' => $siswaModel->nis,
+                'saldo' => $siswaModel->saldo ? $siswaModel->saldo->saldo : 0,
+            ]
+        ]);
+    }
+    return response()->json(['siswa' => null]);
 });
 Route::post('/topup/reset', function() {
-    Cache::forget('topup_siswa_id');
-    return response()->json(['status' => 'reset']);
+    \Illuminate\Support\Facades\Cache::forget('topup_siswa');
+    return response()->json(['success' => true]);
 });
-
+Route::post('/topup/store', function(Request $request) {
+    $request->validate([
+        'siswa_id' => 'required|exists:siswa,id',
+        'nominal' => 'required|numeric|min:1000',
+    ]);
+    try {
+        $siswa = Siswa::find($request->siswa_id);
+        if (!$siswa) throw new \Exception('Siswa tidak ditemukan');
+        // Ambil saldo siswa
+        $saldo = Saldo::where('siswa_id', $siswa->id)->first();
+        if (!$saldo) {
+            // Jika belum ada, buat saldo baru
+            $saldo = Saldo::create([
+                'siswa_id' => $siswa->id,
+                'saldo' => $request->nominal,
+            ]);
+        } else {
+            // Jika sudah ada, tambahkan saldo
+            $saldo->saldo += $request->nominal;
+            $saldo->save();
+        }
+        // Catat histori topup
+        Topup::create([
+            'siswa_id' => $siswa->id,
+            'nominal' => $request->nominal,
+            'waktu' => now(),
+        ]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
+});
+// Saat scan RFID untuk transaksi (bukan topup), simpan ID siswa ke cache
 Route::post('/rfid-scan-transaksi', function(Request $request) {
     $uid = $request->uid;
     $siswa = Siswa::where('rfid', $uid)->first();
     if ($siswa) {
+        // ambil saldo dari tabel saldo
+        $saldo = Saldo::where('siswa_id', $siswa->id)->value('saldo') ?? 0;
+
         Cache::put('transaksi_siswa_id', $siswa->id, now()->addMinutes(2));
-        return response()->json(['status' => 'ok', 'siswa' => $siswa]);
+        return response()->json([
+            'status' => 'ok',
+            'siswa' => [
+                'id' => $siswa->id,
+                'nama' => $siswa->nama,
+                'nis' => $siswa->nis,
+                'saldo' => (float) $saldo,
+            ]
+        ]);
     }
     return response()->json(['status' => 'not_found']);
 });
-
+// Polling data siswa yang sedang transaksi (bukan topup)
 Route::get('/transaksi/current', function() {
     $id = Cache::get('transaksi_siswa_id');
     $siswa = $id ? Siswa::find($id) : null;
@@ -90,7 +160,7 @@ Route::get('/transaksi/current', function() {
     }
     return response()->json(['siswa' => $siswa]);
 });
-
+// Reset cache transaksi siswa
 Route::post('/transaksi/reset', function() {
     Cache::forget('transaksi_siswa_id');
     return response()->json(['status' => 'reset']);
