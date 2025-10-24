@@ -4,18 +4,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <h2 class="text-2xl font-bold mb-4">Laporan Transaksi</h2>
 
-    @if(config('app.debug'))
-    <div class="mb-4 p-4 bg-gray-100 rounded">
-        <pre class="text-xs">
-            Debug Info:
-            Is Admin: {{ $debug['is_admin'] ? 'Yes' : 'No' }}
-            Kantin ID: {{ $debug['kantin_id'] ?? 'None' }}
-            Raw Count: {{ $debug['raw_count'] }}
-            Query Count: {{ $debug['query_count'] }}
-        </pre>
-    </div>
-    @endif
-
     <!-- Date Filter -->
     <form action="{{ route('pos.laporan') }}" method="GET" class="mb-6 bg-white p-4 rounded-lg shadow-sm">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
