@@ -19,6 +19,7 @@ use App\Http\Controllers\PosTransaksiController;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Http\Controllers\LaporanTransaksiController;
+use App\Http\Controllers\TopupNotifyController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -113,4 +114,13 @@ Route::post('/pos/transaksi/bayar', [PosTransaksiController::class, 'bayar'])->n
 Route::prefix('pos')->middleware(['auth'])->group(function () {
     // Laporan Transaksi Route
     Route::get('/laporan', [LaporanTransaksiController::class, 'index'])->name('pos.laporan');
+});
+
+// Pastikan berada di group yang menggunakan middleware auth jika diperlukan
+Route::middleware(['auth'])->group(function () {
+    // halaman form topup (opsional)
+    Route::get('/pos/topup/new', [TopupNotifyController::class, 'create'])->name('pos.topup.create');
+
+    // aksi topup + notifikasi
+    Route::post('/pos/topup/notify', [TopupNotifyController::class, 'store'])->name('pos.topup.notify');
 });

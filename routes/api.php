@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Siswa;
 use App\Models\Saldo;
 use App\Models\Topup;
+use App\Http\Controllers\TopupNotifyController;
 
 Route::post('/absensi-api', [ApiAbsensiController::class, 'store']);
 Route::get('/siswa-api', [ApiSiswaController::class, 'index']);
@@ -97,37 +98,32 @@ Route::post('/topup/reset', function() {
     \Illuminate\Support\Facades\Cache::forget('topup_siswa');
     return response()->json(['success' => true]);
 });
-Route::post('/topup/store', function(Request $request) {
-    $request->validate([
-        'siswa_id' => 'required|exists:siswa,id',
-        'nominal' => 'required|numeric|min:1000',
+// Delegate API topup to controller that also sends notification / logs
+// replaced direct controller route with closure that logs request/response
+Route::post('/topup/store', function(\Illuminate\Http\Request $request) {
+    \Log::info('API /api/topup/store called', [
+        'payload' => $request->all(),
+        'ip' => $request->ip(),
+        'user_agent' => $request->header('User-Agent')
     ]);
+
+    // resolve instance and call controller method
+    $controller = app()->make(TopupNotifyController::class);
+    $response = app()->call([$controller, 'apiStore'], ['request' => $request]);
+
     try {
-        $siswa = Siswa::find($request->siswa_id);
-        if (!$siswa) throw new \Exception('Siswa tidak ditemukan');
-        // Ambil saldo siswa
-        $saldo = Saldo::where('siswa_id', $siswa->id)->first();
-        if (!$saldo) {
-            // Jika belum ada, buat saldo baru
-            $saldo = Saldo::create([
-                'siswa_id' => $siswa->id,
-                'saldo' => $request->nominal,
-            ]);
+        if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $body = $response->getData(true);
         } else {
-            // Jika sudah ada, tambahkan saldo
-            $saldo->saldo += $request->nominal;
-            $saldo->save();
+            $body = (string) $response;
         }
-        // Catat histori topup
-        Topup::create([
-            'siswa_id' => $siswa->id,
-            'nominal' => $request->nominal,
-            'waktu' => now(),
-        ]);
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    } catch (\Throwable $e) {
+        $body = 'unable to serialize response: ' . $e->getMessage();
     }
+
+    \Log::info('API /api/topup/store response', ['response' => $body]);
+
+    return $response;
 });
 // Saat scan RFID untuk transaksi (bukan topup), simpan ID siswa ke cache
 Route::post('/rfid-scan-transaksi', function(Request $request) {
