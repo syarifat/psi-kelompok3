@@ -15,6 +15,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPaymentController;
 use App\Http\Controllers\TopupController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PosTransaksiController;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
@@ -118,9 +119,11 @@ Route::prefix('pos')->middleware(['auth'])->group(function () {
 
 // Pastikan berada di group yang menggunakan middleware auth jika diperlukan
 Route::middleware(['auth'])->group(function () {
-    // halaman form topup (opsional)
     Route::get('/pos/topup/new', [TopupNotifyController::class, 'create'])->name('pos.topup.create');
-
-    // aksi topup + notifikasi
     Route::post('/pos/topup/notify', [TopupNotifyController::class, 'store'])->name('pos.topup.notify');
+});
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/pos/laporan', [LaporanController::class, 'index'])->name('pos.laporan');
+    Route::get('/pos/laporan/export', [LaporanController::class, 'export'])->name('pos.laporan.export');
 });
