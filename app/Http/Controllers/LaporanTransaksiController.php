@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class LaporanTransaksiController extends Controller
 {
@@ -21,27 +20,29 @@ class LaporanTransaksiController extends Controller
             $query->where('kantin_id', $user->kantin_id);
         }
 
-        // filter tanggal bila ada
-        if ($request->filled('start_date') && $request->filled('end_date')) {
+        // Filter tanggal:
+        // - jika kedua tanggal diisi -> range
+        // - jika hanya start_date -> hanya hari itu
+        // - jika hanya end_date -> hanya hari itu (end_date)
+        $start = $request->input('start_date');
+        $end = $request->input('end_date');
+
+        if ($start && $end) {
             $query->whereBetween('created_at', [
-                $request->start_date . ' 00:00:00',
-                $request->end_date . ' 23:59:59'
+                $start . ' 00:00:00',
+                $end . ' 23:59:59',
             ]);
+        } elseif ($start) {
+            $query->whereDate('created_at', $start);
+        } elseif ($end) {
+            $query->whereDate('created_at', $end);
         }
 
-        // hitung total dari clone query agar tidak terganggu paginate
+        // hitung total dari clone query agar paginate tidak mempengaruhi sum
         $total = (clone $query)->sum('total');
 
         $transaksi = $query->paginate(10);
 
-        // debug info untuk view (hindari undefined variable)
-        $debug = [
-            'is_admin'  => $user->is_admin ?? false,
-            'kantin_id' => $user->kantin_id ?? null,
-            'raw_count' => DB::table('transaksi')->count(),
-            'query_count'=> $transaksi->total()
-        ];
-
-        return view('laporan.transaksi', compact('transaksi', 'total', 'debug'));
+        return view('laporan.transaksi', compact('transaksi', 'total'));
     }
 }

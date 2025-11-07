@@ -7,6 +7,10 @@ use App\Models\Siswa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Services\FonnteService;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
+use App\Models\Saldo;
 
 class PosTransaksiController extends Controller
 {
@@ -121,6 +125,81 @@ class PosTransaksiController extends Controller
 
         // Potong saldo siswa
         \App\Models\Saldo::where('siswa_id', $siswa_id)->decrement('saldo', $total);
+
+        // --- START: kirim notifikasi WA ke orang tua (jika tersedia) ---
+        try {
+            // refresh saldo setelah decrement
+            $saldoAkhir = Saldo::where('siswa_id', $siswa_id)->value('saldo');
+
+            // ambil nomor ortu
+            $noHpOrtu = $siswa->no_hp_ortu ?? $siswa->nomor_ortu ?? null;
+
+            if (!$noHpOrtu) {
+                Log::info('TransaksiNotify: no parent phone, skip notify', [
+                    'siswa_id' => $siswa_id,
+                    'transaksi_id' => $transaksi_id
+                ]);
+            } else {
+                $wa = trim($noHpOrtu);
+                if (str_starts_with($wa, '+')) $wa = ltrim($wa, '+');
+                if (str_starts_with($wa, '0')) $wa = '62' . ltrim($wa, '0');
+
+                // ambil items dari DB (pastikan nama kolom sesuai)
+                $items = DB::table('transaksi_item')
+                    ->where('transaksi_id', $transaksi_id)
+                    ->get();
+
+                // build item list string (cari nama barang)
+                $itemLines = [];
+                foreach ($items as $it) {
+                    $barangName = DB::table('barang')->where('barang_id', $it->barang_id)->value('nama_barang') ?? 'Item';
+                    $subtotalStr = number_format($it->subtotal, 0, ',', '.');
+                    $itemLines[] = "- {$barangName} ({$it->qty}x) : Rp {$subtotalStr}";
+                }
+                $itemList = implode("\n", $itemLines);
+
+                // tanggal & waktu (Bahasa Indonesia)
+                $nowDate = Carbon::now()->locale('id')->isoFormat('dddd, D MMMM YYYY');
+                $nowTime = Carbon::now()->format('H:i');
+
+                $totalStr = number_format($total, 0, ',', '.');
+                $saldoStr = number_format($saldoAkhir ?? 0, 0, ',', '.');
+
+                $message = "Assalamu'alaikum Bapak/Ibu,\n\n"
+                    . "Informasi Transaksi Kantin Siswa:\n"
+                    . "Nama : {$siswa->nama}\n"
+                    . "Tanggal : {$nowDate}\n"
+                    . "Pukul : {$nowTime}\n\n"
+                    . "Detail Pembelian:\n"
+                    . "{$itemList}\n\n"
+                    . "Total Pembelian : *Rp {$totalStr}*\n"
+                    . "Sisa Saldo : *Rp {$saldoStr}*\n\n"
+                    . "Terima kasih.\n- Sekolah";
+
+                Log::info('TransaksiNotify: sending WA', [
+                    'to' => $wa,
+                    'transaksi_id' => $transaksi_id,
+                    'message_preview' => substr($message, 0, 200)
+                ]);
+
+                if (class_exists(FonnteService::class)) {
+                    $svc = new FonnteService();
+                    $svc->sendMessage($wa, $message);
+                    Log::info('TransaksiNotify: WA sent', ['to' => $wa, 'transaksi_id' => $transaksi_id]);
+                } else {
+                    Log::warning('TransaksiNotify: FonnteService missing, logged message instead', [
+                        'to' => $wa,
+                        'message' => $message
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('TransaksiNotify: failed', [
+                'error' => $e->getMessage(),
+                'transaksi_id' => $transaksi_id
+            ]);
+        }
+        // --- END: kirim notifikasi ---
 
         // Kosongkan session dan cache
         session()->forget('keranjang');

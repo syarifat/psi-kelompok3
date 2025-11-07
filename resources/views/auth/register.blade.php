@@ -1,91 +1,89 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-        <div class="bg-white rounded-xl shadow-lg w-full max-w-sm p-4">
-            <div class="flex flex-col items-center mb-4">
-                <img src="{{ asset('logo.svg') }}" alt="Logo" class="h-10 mb-1">
-                <span class="text-xl font-bold text-cyan-700 text-center leading-tight">
-                    siPredi <span class="text-yellow-500">SMP ISLAM</span> TULUNGAGUNG
+    <div class="min-h-screen flex items-center justify-center bg-white">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8">
+            <!-- Logo & Judul -->
+            <div class="flex flex-col items-center mb-6">
+                <img src="{{ asset('logo.svg') }}" alt="Logo" class="h-12 mb-2">
+                <span class="text-3xl font-bold text-cyan-700 text-center leading-tight">
+                    KaSiPay
                 </span>
-                <div class="mt-1 text-base font-semibold text-gray-700 text-center">
-                    <span class="text-gray-700 font-bold">Sistem Presensi Digital</span>
+                <div class="mt-2 text-lg font-semibold text-gray-700 text-center">
+                    <span class="text-gray-700 text-2xl font-bold">Sistem Pembayaran Kantin</span>
                 </div>
             </div>
-            <div class="mb-4 text-center">
-                <span class="text-lg font-bold text-gray-700">Register</span>
-                <div class="text-xs text-gray-500 mt-1">Silakan isi data untuk membuat akun siPredi.</div>
+
+            <!-- Register Header -->
+            <div class="mb-6">
+                <span class="text-2xl font-bold text-gray-700">Sign<span class="text-cyan-700">Up</span></span>
+                <div class="text-sm text-gray-500 mt-1">Silakan isi data untuk membuat akun KaSiPay Anda.</div>
             </div>
+
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
                 <!-- Name -->
-                <div class="mb-2">
-                    <x-input-label for="name" :value="__('Name')" />
-                    <x-text-input id="name" class="block w-full px-3 py-1.5 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500 text-sm mt-1"
-                        type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                    <x-input-error :messages="$errors->get('name')" class="mt-1" />
+                <div class="mb-4">
+                    <input type="text" id="name" name="name" placeholder="Full Name" :value="old('name')" required autofocus 
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
 
-                <!-- Email Address -->
-                <div class="mb-2">
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block w-full px-3 py-1.5 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500 text-sm mt-1"
-                        type="email" name="email" :value="old('email')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-1" />
+                <!-- Email -->
+                <div class="mb-4">
+                    <input type="email" id="email" name="email" placeholder="Email Address" :value="old('email')" required
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
                 <!-- Password -->
-                <div class="mb-2">
-                    <x-input-label for="password" :value="__('Password')" />
+                <div class="mb-4">
                     <div class="relative">
-                        <x-text-input id="password" class="block w-full px-3 py-1.5 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500 text-sm mt-1"
-                            type="password" name="password" required autocomplete="new-password" />
-                        <button type="button" onclick="togglePassword('password', 'eye1')" class="absolute inset-y-0 right-0 px-2 flex items-center text-gray-400">
-                            <svg id="eye1" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <input type="password" id="password" name="password" placeholder="Password" required
+                            class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500" />
+                        <button type="button" onclick="togglePassword('password', 'eye1')" 
+                            class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400">
+                            <svg id="eye1" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
                     </div>
-                    <x-input-error :messages="$errors->get('password')" class="mt-1" />
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
                 <!-- Confirm Password -->
-                <div class="mb-2">
-                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                <div class="mb-4">
                     <div class="relative">
-                        <x-text-input id="password_confirmation" class="block w-full px-3 py-1.5 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500 text-sm mt-1"
-                            type="password" name="password_confirmation" required autocomplete="new-password" />
-                        <button type="button" onclick="togglePassword('password_confirmation', 'eye2')" class="absolute inset-y-0 right-0 px-2 flex items-center text-gray-400">
-                            <svg id="eye2" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required
+                            class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500" />
+                        <button type="button" onclick="togglePassword('password_confirmation', 'eye2')" 
+                            class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400">
+                            <svg id="eye2" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </button>
                     </div>
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>
 
-                <div class="flex items-center justify-end mt-3">
-                    <a class="underline text-xs text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500" href="{{ route('login') }}">
-                        {{ __('Already registered?') }}
+                <div class="flex items-center justify-between mb-4">
+                    <a href="{{ route('login') }}" class="text-sm text-cyan-600 hover:underline">
+                        Already registered?
                     </a>
-                    <x-primary-button class="ms-2 py-1.5 px-4 text-sm">
-                        {{ __('Register') }}
-                    </x-primary-button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-cyan-600 text-white font-bold shadow hover:bg-cyan-700 transition">
+                        Register
+                    </button>
                 </div>
             </form>
-            <div class="mt-4 text-xs text-gray-700 text-center leading-tight">
-                <span class="font-bold text-cyan-700">SMK Islam Tulungagung</span><br>
-                Jl. Patah Jali, No. 34, Batangsaren, Kauman<br>
-                Kabupaten Tulungagung, Kode Pos 66261<br>
-                Telepon: 087842 (949212)<br>
-                Website: <a href="https://www.sat-project.me" class="text-blue-600 underline">https://sat-project.me</a>
-            </div>
-            <div class="mt-2 text-xs text-gray-500 text-center">
-                Copyright &copy; 2025 <span class="font-bold text-yellow-500">SAT Project</span>.
+
+            <!-- Footer -->
+            <div class="mt-8 text-xs text-gray-500 text-center">
+                Copyright &copy; {{ date('Y') }} KaSiPay. All rights reserved.
             </div>
         </div>
     </div>
+
     <script>
         function togglePassword(inputId, eyeId) {
             const input = document.getElementById(inputId);

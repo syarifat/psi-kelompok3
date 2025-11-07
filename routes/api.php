@@ -2,53 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiAbsensiController;
 use App\Http\Controllers\Api\ApiSiswaController;
-use App\Http\Controllers\Api\RombelSiswaApiController;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Siswa;
 use App\Models\Saldo;
 use App\Models\Topup;
+use App\Http\Controllers\TopupNotifyController;
 
-Route::post('/absensi-api', [ApiAbsensiController::class, 'store']);
 Route::get('/siswa-api', [ApiSiswaController::class, 'index']);
-Route::get('/rombel-siswa', [RombelSiswaApiController::class, 'index']);
 Route::get('/siswa', [\App\Http\Controllers\Api\SiswaApiController::class, 'index']);
-// fetch absensi terbaru
-Route::get('/absensi-terbaru', function(Request $request) {
-	$query = \App\Models\Absensi::with('siswa')->orderBy('id', 'desc');
-	if ($request->filled('search')) {
-		$search = $request->search;
-		$query->whereHas('siswa', function($q) use ($search) {
-			$q->where('nama', 'like', "%$search%")
-			  ->orWhere('nis', 'like', "%$search%");
-		});
-	}
-	if ($request->filled('tanggal')) {
-		$query->where('tanggal', $request->tanggal);
-	}
-	if ($request->filled('kelas_id')) {
-		$query->whereHas('siswa', function($q) use ($request) {
-			$q->whereIn('id', \App\Models\RombelSiswa::where('kelas_id', $request->kelas_id)
-				->pluck('siswa_id')->toArray());
-		});
-	}
-	$absensi = $query->limit(30)->get()->map(function($row) {
-		$rombel = $row->siswa ? $row->siswa->rombel : null;
-		return [
-			'id' => $row->id,
-			'siswa_nama' => $row->siswa->nama ?? '-',
-			'nomor_absen' => $rombel ? $rombel->nomor_absen : '-',
-			'siswa_nis' => $row->siswa->nis ?? '-',
-			'kelas_nama' => ($rombel && $rombel->kelas) ? $rombel->kelas->nama : '-',
-			'tanggal' => $row->tanggal,
-			'jam' => $row->jam,
-			'status' => ucfirst($row->status),
-			'keterangan' => $row->keterangan,
-		];
-	});
-	return response()->json($absensi);
-});
 
 // Saat scan RFID, simpan ID siswa ke cache
 Route::post('/rfid-scan', function(Request $request) {
@@ -97,37 +59,32 @@ Route::post('/topup/reset', function() {
     \Illuminate\Support\Facades\Cache::forget('topup_siswa');
     return response()->json(['success' => true]);
 });
-Route::post('/topup/store', function(Request $request) {
-    $request->validate([
-        'siswa_id' => 'required|exists:siswa,id',
-        'nominal' => 'required|numeric|min:1000',
+// Delegate API topup to controller that also sends notification / logs
+// replaced direct controller route with closure that logs request/response
+Route::post('/topup/store', function(\Illuminate\Http\Request $request) {
+    \Log::info('API /api/topup/store called', [
+        'payload' => $request->all(),
+        'ip' => $request->ip(),
+        'user_agent' => $request->header('User-Agent')
     ]);
+
+    // resolve instance and call controller method
+    $controller = app()->make(TopupNotifyController::class);
+    $response = app()->call([$controller, 'apiStore'], ['request' => $request]);
+
     try {
-        $siswa = Siswa::find($request->siswa_id);
-        if (!$siswa) throw new \Exception('Siswa tidak ditemukan');
-        // Ambil saldo siswa
-        $saldo = Saldo::where('siswa_id', $siswa->id)->first();
-        if (!$saldo) {
-            // Jika belum ada, buat saldo baru
-            $saldo = Saldo::create([
-                'siswa_id' => $siswa->id,
-                'saldo' => $request->nominal,
-            ]);
+        if ($response instanceof \Illuminate\Http\JsonResponse) {
+            $body = $response->getData(true);
         } else {
-            // Jika sudah ada, tambahkan saldo
-            $saldo->saldo += $request->nominal;
-            $saldo->save();
+            $body = (string) $response;
         }
-        // Catat histori topup
-        Topup::create([
-            'siswa_id' => $siswa->id,
-            'nominal' => $request->nominal,
-            'waktu' => now(),
-        ]);
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    } catch (\Throwable $e) {
+        $body = 'unable to serialize response: ' . $e->getMessage();
     }
+
+    \Log::info('API /api/topup/store response', ['response' => $body]);
+
+    return $response;
 });
 // Saat scan RFID untuk transaksi (bukan topup), simpan ID siswa ke cache
 Route::post('/rfid-scan-transaksi', function(Request $request) {

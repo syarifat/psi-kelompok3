@@ -2,24 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SMP Islam Tulungagung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaSiPay</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-    /* Hilangkan icon bawaan select di semua browser */
-    select#kelas_id {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-image: none;
-    }
-    </style>
 </head>
-<body>
-    @if(session('sidebar') === 'payment')
-        @include('layouts.navigation_payment')
-    @else
-        @include('layouts.navigation_absensi')
-    @endif
+<body x-data="{ sidebar: true }" class="bg-gray-50">
+
+    {{-- NAVIGATION --}}
+    @include('layouts.navigation_payment')
+
     @yield('scripts')
 </body>
 </html>

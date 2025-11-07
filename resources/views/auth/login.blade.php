@@ -1,22 +1,22 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
         <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-8">
             <!-- Logo & Judul -->
             <div class="flex flex-col items-center mb-6">
                 <img src="{{ asset('logo.svg') }}" alt="Logo" class="h-12 mb-2">
                 <span class="text-3xl font-bold text-cyan-700 text-center leading-tight">
-                    siPredi <span class="text-yellow-500">SMP ISLAM</span> TULUNGAGUNG
+                    KaSiPay
                 </span>
                 <div class="mt-2 text-lg font-semibold text-gray-700 text-center">
-                    <!-- Sistem Presensi Digital<br> -->
-                    <span class="text-gray-700 text-2xl font-bold">Sistem Presensi Digital</span>
+                    <span class="text-gray-700 text-2xl font-bold">Sistem Pembayaran Kantin</span>
                 </div>
             </div>
+
             <!-- Form Login -->
             <div class="mb-6">
                 <span class="text-2xl font-bold text-gray-700">Sign<span class="text-cyan-700">In</span></span>
-                <div class="text-sm text-gray-500 mt-1">Gunakan Username & Password <strong>siPredi</strong> Anda.</div>
+                <div class="text-sm text-gray-500 mt-1">Gunakan Username & Password akun KaSiPay Anda.</div>
             </div>
+
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-4">
@@ -24,6 +24,7 @@
                         class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
+
                 <div class="mb-4">
                     <div class="relative">
                         <input id="password" type="password" name="password" placeholder="Password" required autocomplete="current-password"
@@ -37,6 +38,10 @@
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
+
+                <!-- Auto select payment mode (hidden) -->
+                <input type="hidden" name="app_mode" value="payment">
+
                 <div class="flex items-center justify-between mb-4">
                     <label for="remember_me" class="inline-flex items-center">
                         <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500" name="remember">
@@ -48,30 +53,16 @@
                         </a>
                     @endif
                 </div>
-                <div class="mb-4">
-                    <label for="app_mode" class="block text-sm font-medium text-gray-700">Pilih Aplikasi</label>
-                    <select id="app_mode" name="app_mode"
-                        class="block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500">
-                        <option value="absensi">Absensi</option>
-                        <option value="payment">Payment</option>
-                    </select>
-                </div>
 
                 <button type="submit" class="w-full py-2 rounded-md bg-cyan-600 text-white font-bold shadow hover:bg-cyan-700 transition">Sign In</button>
             </form>
-            <!-- Info Sekolah -->
-            <div class="mt-8 text-xs text-gray-700 text-center">
-                <span class="font-bold text-cyan-700">SMK Islam Tulungagung</span><br>
-                Jl. Patah Jali, No. 34, Batangsaren, Kauman<br>
-                Kabupaten Tulungagung, Kode Pos 66261<br>
-                Telepon: 087842 (949212)<br>
-                Website: <a href="https://www.sat-project.me" class="text-blue-600 underline">https://sat-project.me</a>
-            </div>
-            <div class="mt-4 text-xs text-gray-500 text-center">
-                Copyright &copy; 2025 <span class="font-bold text-yellow-500">SAT Project</span>.
+
+            <!-- Footer -->
+            <div class="mt-8 text-xs text-gray-500 text-center">
+                Copyright &copy; {{ date('Y') }} KaSiPay. All rights reserved.
             </div>
         </div>
-    </div>
+
     <script>
         function togglePassword() {
             const input = document.getElementById('password');
