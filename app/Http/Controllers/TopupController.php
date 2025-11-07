@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Saldo;
 use App\Models\Topup;
-use Illuminate\Support\Facades\DB; // <-- Pastikan ini di-import
+use Illuminate\Support\Facades\DB;
 
 class TopupController extends Controller
 {
@@ -15,7 +15,12 @@ class TopupController extends Controller
      */
     public function create()
     {
-        $historiAll = \App\Models\Topup::with('siswa.kelas')->orderByDesc('created_at')->limit(50)->get();
+        // Remove kelas relationship, just get topup history with siswa data
+        $historiAll = Topup::with('siswa')
+            ->orderByDesc('created_at')
+            ->limit(50)
+            ->get();
+            
         return view('Topup.Topup', compact('historiAll'));
     }
 
@@ -67,10 +72,11 @@ class TopupController extends Controller
      */
     public function show($siswa_id)
     {
-        $siswa = \App\Models\Siswa::find($siswa_id);
-        $histori = \App\Models\Topup::where('siswa_id', $siswa_id)
+        $siswa = Siswa::findOrFail($siswa_id);
+        $histori = Topup::where('siswa_id', $siswa_id)
             ->orderByDesc('created_at')
             ->get();
+            
         return view('topup.topup', compact('siswa', 'histori'));
     }
 }
