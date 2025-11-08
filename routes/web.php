@@ -12,8 +12,8 @@ use App\Http\Controllers\TopupController;
 use App\Http\Controllers\PosTransaksiController;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
-use App\Http\Controllers\LaporanTransaksiController;
 use App\Http\Controllers\TopupNotifyController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -71,14 +71,15 @@ Route::delete('/pos/transaksi/hapus-barang/{barang_id}', [PosTransaksiController
 Route::post('/pos/transaksi/scan-rfid', [PosTransaksiController::class, 'scanRfid'])->name('pos.transaksi.scan_rfid');
 Route::post('/pos/transaksi/bayar', [PosTransaksiController::class, 'bayar'])->name('pos.transaksi.bayar');
 
-// POS Routes
-Route::prefix('pos')->middleware(['auth'])->group(function () {
-    // Laporan Transaksi Route
-    Route::get('/laporan', [LaporanTransaksiController::class, 'index'])->name('pos.laporan');
-});
-
 // Pastikan berada di group yang menggunakan middleware auth jika diperlukan
 Route::middleware(['auth'])->group(function () {
     Route::get('/pos/topup/new', [TopupNotifyController::class, 'create'])->name('pos.topup.create');
     Route::post('/pos/topup/notify', [TopupNotifyController::class, 'store'])->name('pos.topup.notify');
+});
+
+// Laporan Routes
+Route::middleware(['auth'])->prefix('laporan')->group(function () {
+    Route::get('/income', [LaporanController::class, 'income'])->name('laporan.income');
+    Route::get('/transaksi', [LaporanController::class, 'transaksi'])->name('laporan.transaksi');
+    Route::get('/export/transaksi', [LaporanController::class, 'exportTransaksi'])->name('laporan.transaksi.export');
 });

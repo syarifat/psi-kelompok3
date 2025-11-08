@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiSiswaController;
+use App\Http\Controllers\Api\SaldoController;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Siswa;
 use App\Models\Saldo;
@@ -122,3 +123,4 @@ Route::post('/transaksi/reset', function() {
     Cache::forget('transaksi_siswa_id');
     return response()->json(['status' => 'reset']);
 });
+Route::get('/saldo', [SaldoController::class, 'index']);

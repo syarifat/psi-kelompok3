@@ -56,7 +56,13 @@
 
                 <button type="submit" class="w-full py-2 rounded-md bg-cyan-600 text-white font-bold shadow hover:bg-cyan-700 transition">Sign In</button>
             </form>
-
+            <!-- Registration Link -->
+            <div class="text-center text-sm">
+                <span class="text-gray-600">Don't have an account?</span>
+                <a href="{{ route('register') }}" class="text-cyan-600 hover:underline font-medium">
+                    Register here
+                </a>
+            </div>
             <!-- Footer -->
             <div class="mt-8 text-xs text-gray-500 text-center">
                 Copyright &copy; {{ date('Y') }} KaSiPay. All rights reserved.

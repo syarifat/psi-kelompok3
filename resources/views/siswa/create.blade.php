@@ -12,12 +12,12 @@
         </div>
         <div class="mb-4">
             <label class="block mb-1 font-semibold">NIS</label>
-            <input type="text" name="nis" class="w-full border rounded px-3 py-2" required value="{{ old('nis') }}">
+            <input type="number" name="nis" class="w-full border rounded px-3 py-2" required value="{{ old('nis') }}">
             @error('nis')<div class="text-red-500 text-sm">{{ $message }}</div>@enderror
         </div>
         <div class="mb-4">
             <label class="block mb-1 font-semibold">No HP Orang Tua</label>
-            <input type="text" name="no_hp_ortu" class="w-full border rounded px-3 py-2" required value="{{ old('no_hp_ortu') }}">
+            <input type="number" name="no_hp_ortu" class="w-full border rounded px-3 py-2" required value="{{ old('no_hp_ortu') }}">
             @error('no_hp_ortu')<div class="text-red-500 text-sm">{{ $message }}</div>@enderror
         </div>
         <div class="mb-4">
