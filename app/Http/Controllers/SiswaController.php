@@ -103,4 +103,35 @@ public function topupHistoriView($siswa_id)
 
     return view('siswa.topup_histori', compact('siswa', 'topups'));
 }
+
+/**
+ * Transaksi history view (sama logika dengan topup_histori)
+ */
+public function transaksiHistoriView($siswa_id)
+{
+    $siswa = \App\Models\Siswa::findOrFail($siswa_id);
+
+    $transaksi = \App\Models\Transaksi::where('siswa_id', $siswa_id)
+        ->with(['transaksiItems.barang', 'kantin'])
+        ->orderByDesc('created_at')
+        ->get();
+
+    // transform collection agar struktur sama dengan laporan (items, qty, subtotal, total)
+    $transaksi = $transaksi->map(function ($t) {
+        $t->items = collect($t->transaksiItems ?? [])->map(function ($it) {
+            $qty = $it->jumlah ?? $it->qty ?? 0;
+            $subtotal = $it->subtotal ?? ($qty * ($it->harga ?? $it->harga_satuan ?? 0));
+            return (object) [
+                'barang'   => $it->barang ?? null,
+                'qty'      => $qty,
+                'subtotal' => $subtotal,
+            ];
+        });
+
+        $t->total = $t->total_harga ?? $t->total ?? $t->amount ?? 0;
+        return $t;
+    });
+
+    return view('siswa.transaksi_history', compact('siswa', 'transaksi'));
+}
 }

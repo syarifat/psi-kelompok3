@@ -52,7 +52,9 @@
         <!-- Navigation Menu -->
         <nav class="flex-1 py-4 px-4 flex flex-col gap-1">
             <span class="text-xs text-gray-500 font-semibold px-3 mt-2 mb-1">Menu</span>
-            <!-- Master Data Dropdown -->
+            
+            <!-- Master Data Dropdown - HANYA UNTUK ADMIN -->
+            @if (Auth::user()->role === 'admin')
             <div x-data="{ masterOpen: false }" class="mt-2">
                 <button @click="masterOpen = !masterOpen" 
                         class="flex items-center justify-between w-full px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
@@ -100,7 +102,7 @@
                     <a href="{{ route('barang.index') }}" 
                        class="flex items-center gap-2 pl-10 pr-3 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-r-md border-l-2 border-transparent hover:border-cyan-500">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
                         </svg>
                         Data Barang
                     </a>
@@ -113,6 +115,7 @@
                     </a>
                 </div>
             </div>
+            @endif
             
             <a href="{{ route('dashboard.payment') }}" 
                class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
@@ -123,6 +126,8 @@
                 Dashboard
             </a>
 
+            <!-- Top Up Saldo - HANYA UNTUK ADMIN -->
+            @if (Auth::user()->role === 'admin')
             <a href="{{ route('pos.topup') }}" 
                class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,7 +136,10 @@
                 </svg>
                 Top Up Saldo
             </a>
+            @endif
 
+            <!-- Transaksi (POS) - HANYA UNTUK PEMILIK_KANTIN -->
+            @if (Auth::user()->role === 'pemilik_kantin')
             <a href="{{ route('pos.transaksi') }}" 
                class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,6 +148,16 @@
                 </svg>
                 Transaksi (POS)
             </a>
+
+            <!-- Data Barang - HANYA UNTUK PEMILIK_KANTIN -->
+            <a href="{{ route('barang.index') }}" 
+               class="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                Data Barang
+            </a>
+            @endif
 
             <!-- Reports Dropdown -->
             <div x-data="{ reportsOpen: false }" class="mt-2">

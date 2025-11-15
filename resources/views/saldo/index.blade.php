@@ -23,7 +23,7 @@
                 <th class="px-4 py-2 text-left font-semibold">Nama Siswa</th>
                 <th class="px-4 py-2 text-center font-semibold">NIS</th>
                 <th class="px-4 py-2 text-center font-semibold">Saldo</th>
-                <th class="px-4 py-2 text-center font-semibold">Histori Topup</th>
+                <th class="px-4 py-2 text-center font-semibold">Aksi</th>
             </tr>
         </thead>
         <tbody id="saldo-tbody">
@@ -32,11 +32,19 @@
                 <td class="px-4 py-2 text-left">{{ $saldo->siswa->nama ?? '-' }}</td>
                 <td class="px-4 py-2 text-center">{{ $saldo->siswa->nis ?? '-' }}</td>
                 <td class="px-4 py-2 text-center">Rp. {{ number_format($saldo->saldo, 0, '', '.') }}</td>
-                <td class="px-4 py-2 text-center">
-                    <a href="{{ route('siswa.topup.histori', ['siswa_id' => $saldo->siswa->id]) }}"
-                       class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded transition duration-150 shadow">
-                        Lihat Histori
-                    </a>
+                <td class="px-4 py-2 text-center space-x-2">
+                    @if($saldo->siswa)
+                        <a href="{{ route('siswa.topup.histori', ['siswa_id' => $saldo->siswa->id]) }}"
+                           class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-3 py-2 rounded transition duration-150 shadow">
+                            Topup
+                        </a>
+                        <a href="{{ route('siswa.transaksi.history', ['siswa_id' => $saldo->siswa->id]) }}"
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-2 rounded transition duration-150 shadow">
+                            Riwayat Transaksi
+                        </a>
+                    @else
+                        <span class="text-gray-500">-</span>
+                    @endif
                 </td>
             </tr>
             @endforeach
@@ -59,10 +67,14 @@ function fetchSaldo() {
                         <td class="px-4 py-2 text-left">${saldo.siswa?.nama ?? '-'}</td>
                         <td class="px-4 py-2 text-center">${saldo.siswa?.nis ?? '-'}</td>
                         <td class="px-4 py-2 text-center">Rp. ${Number(saldo.saldo).toLocaleString('id-ID')}</td>
-                        <td class="px-4 py-2 text-center">
+                        <td class="px-4 py-2 text-center space-x-2">
                             <a href="/siswa/${saldo.siswa_id}/topup/histori"
-                               class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded transition duration-150 shadow">
-                                Lihat Histori
+                               class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-3 py-2 rounded transition duration-150 shadow">
+                                Topup
+                            </a>
+                            <a href="/siswa/${saldo.siswa_id}/transaksi-history"
+                               class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-2 rounded transition duration-150 shadow">
+                                Riwayat Transaksi
                             </a>
                         </td>
                     </tr>

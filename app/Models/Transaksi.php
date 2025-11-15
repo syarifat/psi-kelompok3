@@ -40,4 +40,12 @@ class Transaksi extends Model
     {
         return $this->hasMany(TransaksiItem::class, 'transaksi_id', 'transaksi_id');
     }
+
+    /**
+     * Alias supaya kode yang memanggil ->transaksiItems tetap berfungsi
+     */
+    public function transaksiItems(): HasMany
+    {
+        return $this->hasMany(TransaksiItem::class, 'transaksi_id', 'transaksi_id');
+    }
 }
