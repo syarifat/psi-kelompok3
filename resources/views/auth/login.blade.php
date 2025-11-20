@@ -17,7 +17,7 @@
                 <div class="text-sm text-gray-500 mt-1">Gunakan Username & Password akun KaSiPay Anda.</div>
             </div>
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login', [], false) }}">
                 @csrf
                 <div class="mb-4">
                     <input id="email" type="text" name="email" placeholder="Username" required autofocus autocomplete="username"

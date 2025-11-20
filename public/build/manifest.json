@@ -1,0 +1,41 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-RhMBbNUe.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CQzja3Mz.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "head": {
+    "meta": [
+      {
+        "charset": "UTF-8"
+      },
+      {
+        "name": "viewport",
+        "content": "width=device-width, initial-scale=1.0"
+      }
+    ],
+    "title": "KaSiPay",
+    "links": [
+      {
+        "rel": "stylesheet",
+        "href": "/build/assets/app-RhMBbNUe.css"
+      }
+    ],
+    "scripts": [
+      {
+        "defer": true,
+        "src": "/build/assets/app-CQzja3Mz.js"
+      }
+    ],
+    "styles": "@stack('styles')"
+  }
+}
