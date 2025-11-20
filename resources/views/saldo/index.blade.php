@@ -68,7 +68,7 @@ function fetchSaldo() {
                         <td class="px-4 py-2 text-center">${saldo.siswa?.nis ?? '-'}</td>
                         <td class="px-4 py-2 text-center">Rp. ${Number(saldo.saldo).toLocaleString('id-ID')}</td>
                         <td class="px-4 py-2 text-center space-x-2">
-                            <a href="/siswa/${saldo.siswa_id}/topup/histori"
+                            <a href="/siswa/${saldo.siswa_id}/topup-histori"
                                class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-3 py-2 rounded transition duration-150 shadow">
                                 Topup
                             </a>

@@ -15,13 +15,13 @@ class TopupController extends Controller
      */
     public function create()
     {
-        // Remove kelas relationship, just get topup history with siswa data
+        // Ambil semua histori topup (tanpa pagination), urutkan DESC berdasarkan created_at
         $historiAll = Topup::with('siswa')
             ->orderByDesc('created_at')
-            ->limit(50)
             ->get();
-            
-        return view('Topup.Topup', compact('historiAll'));
+
+        // return ke view yang konsisten (resources/views/topup/topup.blade.php)
+        return view('topup.topup', compact('historiAll'));
     }
 
     /**
@@ -73,10 +73,11 @@ class TopupController extends Controller
     public function show($siswa_id)
     {
         $siswa = Siswa::findOrFail($siswa_id);
-        $histori = Topup::where('siswa_id', $siswa_id)
+        // ambil semua histori untuk siswa ini (tanpa pagination)
+        $historiAll = Topup::where('siswa_id', $siswa_id)
             ->orderByDesc('created_at')
             ->get();
-            
-        return view('topup.topup', compact('siswa', 'histori'));
+
+        return view('topup.topup', compact('siswa', 'historiAll'));
     }
 }

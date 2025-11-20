@@ -34,7 +34,6 @@
 
 <!-- Tambahan: Tabel Histori -->
 <div class="max-w-3xl mx-auto mt-12">
-    <h2 class="text-xl font-bold mb-4">Histori Top Up Seluruh Siswa</h2>
     <table class="min-w-full bg-white border rounded shadow">
         <thead>
             <tr class="bg-orange-100">
@@ -42,52 +41,36 @@
                 <th class="px-4 py-2 border text-center">Nama Siswa</th>
                 <th class="px-4 py-2 border text-center">Nominal</th>
                 <th class="px-4 py-2 border text-center">Waktu</th>
-                <th class="px-4 py-2 border text-center">Created At</th> <!-- Tambahan -->
+                <!-- <th class="px-4 py-2 border text-center">Created At</th> -->
             </tr>
         </thead>
         <tbody>
-            @forelse($historiAll as $row)
-            <tr>
-                <td class="px-4 py-2 border text-center">{{ $row->topup_id ?? $row->id }}</td>
-                <td class="px-4 py-2 border text-center">{{ $row->siswa->nama ?? '-' }}</td>
-                <td class="px-4 py-2 border text-center">Rp. {{ number_format($row->nominal, 0, '', '.') }}</td>
-                <td class="px-4 py-2 border text-center">{{ $row->waktu }}</td>
-                <td class="px-4 py-2 border text-center">{{ $row->created_at }}</td> <!-- Tambahan -->
-            </tr>
-            @empty
-            <tr>
-                <td class="px-4 py-2 border text-center" colspan="5">Belum ada data</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
-
-<!-- Popup Alert -->
-<div id="topup-popup" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-    <!-- Backdrop kuning solid -->
-    <div class="absolute inset-0 bg-yellow-300/90"></div>
-    <!-- Popup Content -->
-    <div id="popup-content"
-        class="relative flex flex-col items-center justify-center bg-white rounded-3xl shadow-2xl border-4 border-yellow-400 px-12 py-10 w-[350px] md:w-[420px] scale-0 opacity-0 transition-transform transition-opacity duration-500 z-10">
-        <!-- Success Icon -->
-        <div class="bg-yellow-400 rounded-full p-4 shadow-lg mb-6 animate-bounce">
-            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="white" stroke-width="3" fill="none"/>
-                <path stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M7 13l3 3 7-7"/>
-            </svg>
-        </div>
-        <!-- Message -->
-        <h3 id="popup-message" class="text-yellow-700 text-2xl font-extrabold mb-2 text-center drop-shadow-lg"></h3>
-        <p class="text-gray-700 text-lg mb-6 text-center font-semibold">Saldo berhasil ditambahkan ke akun siswa!</p>
-        <button id="popup-close"
-            class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-all duration-300 text-lg">
-            TUTUP
-        </button>
-    </div>
-</div>
-
-@endsection
+            @php
+                // Pastikan variabel tersedia dan urutkan secara DESC:
+                // prioritas: topup_id, id, fallback ke timestamp created_at
+                $sortedHistori = collect($historiAll ?? [])->sortByDesc(function($row) {
+                    if(isset($row->topup_id)) return $row->topup_id;
+                    if(isset($row->id)) return $row->id;
+                    return isset($row->created_at) ? strtotime($row->created_at) : 0;
+                })->values();
+            @endphp
+            @forelse($sortedHistori as $row)
+                <tr>
+                    <td class="px-4 py-2 border text-center">{{ $row->topup_id ?? $row->id ?? '-' }}</td>
+                    <td class="px-4 py-2 border text-center">{{ $row->siswa->nama ?? '-' }}</td>
+                    <td class="px-4 py-2 border text-center">Rp. {{ number_format($row->nominal ?? 0, 0, '', '.') }}</td>
+                    <td class="px-4 py-2 border text-center">{{ $row->waktu ?? ($row->created_at ?? '-') }}</td>
+                    <!-- <td class="px-4 py-2 border text-center">{{ $row->created_at ?? '-' }}</td> -->
+                 </tr>
+             @empty
+             <tr>
+                 <td class="px-4 py-2 border text-center" colspan="5">Belum ada data</td>
+             </tr>
+             @endforelse
+         </tbody>
+     </table>
+ </div>
+ @endsection
 
 @section('scripts')
 <script>
